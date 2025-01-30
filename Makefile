@@ -12,7 +12,7 @@ build:
 	$(foreach file, $(SRC), \
 		output=$(BIN_DIR)/$(subst /,_,$(basename $(file))); \
 		echo "Compiling $(file) -> $$output"; \
-		go build -gcflags=$(GCFLAGS) -mod=vendor -trimpath -ldflags $(LDFLAGS) -v -o $$output $(FLAGS) ./$(file);)
+		go build -gcflags=$(GCFLAGS) -trimpath -ldflags $(LDFLAGS) -v -o $$output $(FLAGS) ./$(file);)
 
 watch:
 	air

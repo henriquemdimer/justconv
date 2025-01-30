@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/henriquemdimer/justconv/pkg/justconv"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+	conv := justconv.New()
+	output, err := conv.Convert("testdata/convert-this.jpg", "avif")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(output)
 }
