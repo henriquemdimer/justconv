@@ -13,8 +13,14 @@ func NewFFmpegDriver() *FFmpegDriver {
 	return &FFmpegDriver{}
 }
 
-func (self *FFmpegDriver) GetSupportedFormats() []string {
-	return []string{"png", "jpg", "gif", "webp", "avif"}
+func (self *FFmpegDriver) GetSupportedFormats() map[string][]string {
+	return map[string][]string {
+		"png": {"jpg", "webp", "avif", "bmp"},
+		"jpg": {"png", "webp", "avif", "bmp"},
+		"webp": {"png", "jpg", "avif", "bmp"},
+		"avif": {"png", "jpg", "webp", "bmp"},
+		"bmp": {"png", "jpg", "webp", "avif"},
+	}
 }
 
 func (self *FFmpegDriver) GetName() string {
@@ -24,7 +30,7 @@ func (self *FFmpegDriver) GetName() string {
 func (self *FFmpegDriver) Convert(input string, format string) (string, error) {
 	output := strings.TrimSuffix(input, filepath.Ext(input)) + "." + format
 	err := ffmpeg_go.Input(input).
-		Output(output, ffmpeg_go.KwArgs{"q:v": "20"}).
+		Output(output).
 		OverWriteOutput().
 		Run()
 	if err != nil {

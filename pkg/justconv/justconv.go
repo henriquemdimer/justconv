@@ -2,6 +2,8 @@ package justconv
 
 import (
 	"errors"
+	"path/filepath"
+	"strings"
 
 	"github.com/henriquemdimer/justconv/pkg/justconv/drivers"
 )
@@ -16,11 +18,13 @@ func New() *JustConv {
 	}
 }
 
-func (self *JustConv) GetDriver(format string) ConvDriver {
+func (self *JustConv) GetDriver(input_format string, output_format string) ConvDriver {
 	for _, driver := range self.drivers {
 		supported_formats := driver.GetSupportedFormats()
-		for _, tformat := range supported_formats {
-			if tformat == format {
+		group := supported_formats[input_format]
+
+		for _, tformat := range group {
+			if tformat == output_format {
 				return driver
 			}
 		}
@@ -30,11 +34,12 @@ func (self *JustConv) GetDriver(format string) ConvDriver {
 }
 
 func (self *JustConv) Convert(input string, format string) (string, error) {
-	driver := self.GetDriver(format)
+	input_ext := strings.TrimPrefix(filepath.Ext(input), ".")
+
+	driver := self.GetDriver(input_ext, format)
 	if driver == nil {
 		return "", errors.New("Failed to find driver for specific format: " + format)
 	}
 
-	output, err := driver.Convert(input, format)
-	return output, err
+	return driver.Convert(input, format)
 }
