@@ -11,13 +11,13 @@ import (
 
 type JustConv struct {
 	drivers []ConvDriver
-	queue queue.Queue
+	queue queue.Queue[string]
 }
 
 func New() *JustConv {
 	return &JustConv{
 		drivers: []ConvDriver{drivers.NewFFmpegDriver()},
-		queue: queue.NewDefaultQueue(nil),
+		queue: queue.NewDefaultQueue[string](nil),
 	}
 }
 
