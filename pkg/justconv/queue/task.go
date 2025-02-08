@@ -4,11 +4,13 @@ type TaskStatus int
 
 const (
 	TASK_PENDING = iota
+	TASK_FAILED
+	TASK_DONE
 )
 
 type Task[T any] struct {
 	Id     string
-	Handle func() T
+	Handle func() (T, error)
 	Status TaskStatus
 	Result *TaskResult[T]
 }
@@ -18,10 +20,11 @@ type TaskResult[T any] struct {
 	Result T
 }
 
-func NewTask[T any](id string, handle func() T) Task[T] {
+func NewTask[T any](id string, handle func() (T, error)) Task[T] {
 	return Task[T]{
 		Id:     id,
 		Handle: handle,
+		Status: TASK_PENDING,
 	}
 }
 

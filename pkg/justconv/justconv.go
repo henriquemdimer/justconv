@@ -44,9 +44,8 @@ func (self *JustConv) Convert(input string, format string) (string, error) {
 		return "", errors.New("Failed to find driver for specific format: " + format)
 	}
 
-	id := self.queue.Enqueue(queue.NewTask(input, func() string {
-		path, _ := driver.Convert(input, format)
-		return path
+	id := self.queue.Enqueue(queue.NewTask(input, func() (string, error) {
+		return driver.Convert(input, format)
 	}))
 
 	return id, nil
@@ -58,4 +57,8 @@ func (self *JustConv) Init() {
 
 func (self *JustConv) Deinit() {
 	self.queue.Deinit()
+}
+
+func (self *JustConv) GetQueue() queue.Queue[string] {
+	return self.queue
 }

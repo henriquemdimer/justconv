@@ -1,10 +1,7 @@
 package queue
 
-import (
-	"fmt"
-)
-
 type DefaultQueue[T any] struct {
+	tasks       map[string]Task[T]
 	options     DefaultQueueOptions
 	task_chan   chan Task[T]
 	exit_chan   chan int
@@ -17,6 +14,7 @@ type DefaultQueueOptions struct {
 
 func NewDefaultQueue[T any](options *DefaultQueueOptions) *DefaultQueue[T] {
 	return &DefaultQueue[T]{
+		tasks:       make(map[string]Task[T]),
 		options:     validateOptions(options),
 		task_chan:   make(chan Task[T]),
 		exit_chan:   make(chan int),
@@ -43,7 +41,12 @@ out:
 	for {
 		select {
 		case task := <-task_chan:
-			result := NewTaskResult(task.Id, task.Handle())
+			data, err := task.Handle()
+			if err != nil {
+				task.Status = TASK_FAILED
+			}
+
+			result := NewTaskResult(task.Id, data)
 			result_chan <- result
 		case <-exit:
 			break out
@@ -59,8 +62,12 @@ func (self *DefaultQueue[T]) Init() {
 out:
 	for {
 		select {
-		case data := <-self.result_chan:
-			fmt.Println(data)
+		case result := <-self.result_chan:
+			task := self.tasks[result.Id]
+			task.Result = &result
+			task.Status = TASK_DONE
+
+			self.tasks[task.Id] = task
 		case <-self.exit_chan:
 			break out
 		}
@@ -72,6 +79,11 @@ func (self *DefaultQueue[T]) Deinit() {
 }
 
 func (self *DefaultQueue[T]) Enqueue(task Task[T]) string {
+	self.tasks[task.Id] = task
 	self.task_chan <- task
 	return task.Id
+}
+
+func (self *DefaultQueue[T]) GetTask(task_id string) Task[T] {
+	return self.tasks[task_id]
 }

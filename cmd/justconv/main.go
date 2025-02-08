@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"sync"
 
 	"github.com/henriquemdimer/justconv/pkg/justconv"
@@ -27,7 +28,12 @@ func main() {
 			fm = "png"
 		}
 
-		conv.Convert("testdata/convert-this.jpg", fm)
+		id, err := conv.Convert("testdata/convert-this.jpg", fm)
+		if err != nil {
+			log.Printf("Failed to convert to %s\n", fm)
+		}
+
+		log.Printf("Enqueued task: %s", id)
 	}
 
 	wg.Wait()
