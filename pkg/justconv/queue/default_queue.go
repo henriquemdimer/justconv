@@ -41,11 +41,7 @@ out:
 	for {
 		select {
 		case task := <-task_chan:
-			data, err := task.Handle()
-			if err != nil {
-				task.Status = TASK_FAILED
-			}
-
+			data, _ := task.Handle()
 			result := NewTaskResult(task.Id, data)
 			result_chan <- result
 		case <-exit:
@@ -80,7 +76,11 @@ func (self *DefaultQueue[T]) Deinit() {
 
 func (self *DefaultQueue[T]) Enqueue(task Task[T]) string {
 	self.tasks[task.Id] = task
-	self.task_chan <- task
+
+	go func() {
+		self.task_chan <- task
+	}()
+
 	return task.Id
 }
 
