@@ -1,7 +1,7 @@
 package queue
 
 type DefaultQueue[T any] struct {
-	tasks       map[string]Task[T]
+	tasks       map[TaskID]Task[T]
 	options     DefaultQueueOptions
 	task_chan   chan Task[T]
 	exit_chan   chan int
@@ -14,7 +14,7 @@ type DefaultQueueOptions struct {
 
 func NewDefaultQueue[T any](options *DefaultQueueOptions) *DefaultQueue[T] {
 	return &DefaultQueue[T]{
-		tasks:       make(map[string]Task[T]),
+		tasks:       make(map[TaskID]Task[T]),
 		options:     validateOptions(options),
 		task_chan:   make(chan Task[T]),
 		exit_chan:   make(chan int),
@@ -74,7 +74,7 @@ func (self *DefaultQueue[T]) Deinit() {
 	self.exit_chan <- 1
 }
 
-func (self *DefaultQueue[T]) Enqueue(task Task[T]) string {
+func (self *DefaultQueue[T]) Enqueue(task Task[T]) TaskID {
 	self.tasks[task.Id] = task
 
 	go func() {
@@ -84,6 +84,6 @@ func (self *DefaultQueue[T]) Enqueue(task Task[T]) string {
 	return task.Id
 }
 
-func (self *DefaultQueue[T]) GetTask(task_id string) Task[T] {
+func (self *DefaultQueue[T]) GetTask(task_id TaskID) Task[T] {
 	return self.tasks[task_id]
 }

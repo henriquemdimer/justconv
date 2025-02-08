@@ -1,6 +1,9 @@
 package queue
 
+import "github.com/google/uuid"
+
 type TaskStatus int
+type TaskID string
 
 const (
 	TASK_PENDING = iota
@@ -9,28 +12,28 @@ const (
 )
 
 type Task[T any] struct {
-	Id     string
+	Id     TaskID
 	Handle func() (T, error)
 	Status TaskStatus
 	Result *TaskResult[T]
 }
 
 type TaskResult[T any] struct {
-	Id     string
+	Id     TaskID
 	Result T
 }
 
-func NewTask[T any](id string, handle func() (T, error)) Task[T] {
+func NewTask[T any](handle func() (T, error)) Task[T] {
 	return Task[T]{
-		Id:     id,
+		Id:     TaskID(uuid.New().String()),
 		Handle: handle,
 		Status: TASK_PENDING,
 	}
 }
 
-func NewTaskResult[T any](id string, result T) TaskResult[T] {
+func NewTaskResult[T any](id TaskID, result T) TaskResult[T] {
 	return TaskResult[T]{
-		Id: id,
+		Id:     id,
 		Result: result,
 	}
 }

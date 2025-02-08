@@ -36,15 +36,15 @@ func (self *JustConv) GetDriver(input_format string, output_format string) ConvD
 	return nil
 }
 
-func (self *JustConv) Convert(input string, format string) (string, error) {
+func (self *JustConv) Convert(input string, format string) (queue.TaskID, error) {
 	input_ext := strings.TrimPrefix(filepath.Ext(input), ".")
 
 	driver := self.GetDriver(input_ext, format)
 	if driver == nil {
-		return "", errors.New("Failed to find driver for specific format: " + format)
+		return queue.TaskID(""), errors.New("Failed to find driver for specific format: " + format)
 	}
 
-	id := self.queue.Enqueue(queue.NewTask(input, func() (string, error) {
+	id := self.queue.Enqueue(queue.NewTask(func() (string, error) {
 		return driver.Convert(input, format)
 	}))
 

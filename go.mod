@@ -2,7 +2,10 @@ module github.com/henriquemdimer/justconv
 
 go 1.23.5
 
-require github.com/u2takey/ffmpeg-go v0.5.0
+require (
+	github.com/google/uuid v1.1.1
+	github.com/u2takey/ffmpeg-go v0.5.0
+)
 
 require (
 	github.com/aws/aws-sdk-go v1.38.20 // indirect

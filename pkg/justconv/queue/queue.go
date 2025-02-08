@@ -2,7 +2,7 @@ package queue
 
 type Queue[T any] interface {
 	Init()
-	Enqueue(task Task[T]) (id string)
+	Enqueue(task Task[T]) TaskID
+	GetTask(task_id TaskID) Task[T]
 	Deinit()
-	GetTask(task_id string) Task[T]
 }
