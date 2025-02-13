@@ -6,18 +6,17 @@ import (
 	"strings"
 
 	"github.com/henriquemdimer/justconv/pkg/justconv/drivers"
-	"github.com/henriquemdimer/justconv/pkg/justconv/queue"
 )
 
 type JustConv struct {
 	drivers []ConvDriver
-	queue queue.Queue[string]
+	queue Queue[string]
 }
 
 func New() *JustConv {
 	return &JustConv{
 		drivers: []ConvDriver{drivers.NewFFmpegDriver()},
-		queue: queue.NewDefaultQueue[string](nil),
+		queue: NewDefaultQueue[string](nil),
 	}
 }
 
@@ -36,15 +35,15 @@ func (self *JustConv) GetDriver(input_format string, output_format string) ConvD
 	return nil
 }
 
-func (self *JustConv) Convert(input string, format string) (queue.TaskID, error) {
+func (self *JustConv) Convert(input string, format string) (TaskID, error) {
 	input_ext := strings.TrimPrefix(filepath.Ext(input), ".")
 
 	driver := self.GetDriver(input_ext, format)
 	if driver == nil {
-		return queue.TaskID(""), errors.New("Failed to find driver for specific format: " + format)
+		return TaskID(""), errors.New("Failed to find driver for specific format: " + format)
 	}
 
-	id := self.queue.Enqueue(queue.NewTask(func() (string, error) {
+	id := self.queue.Enqueue(NewTask(func() (string, error) {
 		return driver.Convert(input, format)
 	}))
 
@@ -59,6 +58,6 @@ func (self *JustConv) Deinit() {
 	self.queue.Deinit()
 }
 
-func (self *JustConv) GetQueue() queue.Queue[string] {
+func (self *JustConv) GetQueue() Queue[string] {
 	return self.queue
 }

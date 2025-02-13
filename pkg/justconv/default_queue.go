@@ -1,4 +1,4 @@
-package queue
+package justconv
 
 type DefaultQueue[T any] struct {
 	tasks       map[TaskID]Task[T]

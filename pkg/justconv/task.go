@@ -1,4 +1,4 @@
-package queue
+package justconv
 
 import "github.com/google/uuid"
 

@@ -1,4 +1,4 @@
-package queue
+package justconv
 
 type Queue[T any] interface {
 	Init()
