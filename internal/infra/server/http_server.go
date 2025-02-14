@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/henriquemdimer/justconv/internal/controllers"
 	"github.com/henriquemdimer/justconv/internal/domain"
+	"github.com/henriquemdimer/justconv/internal/handlers"
 )
 
 type Server struct {
@@ -42,7 +42,7 @@ func (self *Server) Init() {
 }
 
 func (self *Server) loadHandlers() {
-	cs := []domain.Controller{controllers.NewHealthController()}
+	cs := []domain.Handler{handlers.NewHealthHandler()}
 
 	for _, controller := range cs {
 		controller.Load(http.DefaultServeMux)

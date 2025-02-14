@@ -2,6 +2,6 @@ package domain
 
 import "net/http"
 
-type Controller interface {
+type Handler interface {
 	Load(mux *http.ServeMux)
 }

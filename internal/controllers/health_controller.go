@@ -11,8 +11,6 @@ func NewHealthController() *HealthController {
 	return &HealthController{}
 }
 
-func (self *HealthController) Load(mux *http.ServeMux) {
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "HEALTH OK")
-	})
+func (self *HealthController) GetHealth(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "HEALTH OK")
 }
