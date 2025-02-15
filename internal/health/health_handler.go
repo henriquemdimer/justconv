@@ -1,7 +1,7 @@
 package health
 
 import (
-	"net/http"
+	"github.com/go-chi/chi/v5"
 )
 
 type Handler struct {
@@ -14,6 +14,6 @@ func NewHandler() *Handler {
 	}
 }
 
-func (self *Handler) Load(mux *http.ServeMux) {
-	mux.HandleFunc("/", self.controller.GetHealth)
+func (self *Handler) Load(r chi.Router) {
+	r.Get("/", self.controller.GetHealth)
 }

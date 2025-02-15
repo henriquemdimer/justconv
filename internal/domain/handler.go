@@ -1,7 +1,9 @@
 package domain
 
-import "net/http"
+import (
+	"github.com/go-chi/chi/v5"
+)
 
 type Handler interface {
-	Load(mux *http.ServeMux)
+	Load(r chi.Router)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/henriquemdimer/justconv/internal/domain"
 	"github.com/henriquemdimer/justconv/internal/health"
 )
@@ -37,14 +38,17 @@ func NewHTTPServer(options *HTTPServerOptions) *HTTPServer {
 }
 
 func (self *HTTPServer) Init() {
-	self.loadHandlers()
-	http.ListenAndServe(fmt.Sprintf(":%s", self.options.Port), nil)
+	r := self.loadHandlers()
+	http.ListenAndServe(fmt.Sprintf(":%s", self.options.Port), r)
 }
 
-func (self *HTTPServer) loadHandlers() {
+func (self *HTTPServer) loadHandlers() chi.Router {
 	cs := []domain.Handler{health.NewHandler()}
 
+	router := chi.NewRouter()
 	for _, controller := range cs {
-		controller.Load(http.DefaultServeMux)
+		controller.Load(router)
 	}
+
+	return router
 }
