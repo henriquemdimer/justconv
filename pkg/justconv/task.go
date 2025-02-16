@@ -11,6 +11,12 @@ const (
 	TASK_DONE
 )
 
+var STATUS = map[TaskStatus]string{
+	TASK_PENDING: "PENDING",
+	TASK_FAILED: "FAILED",
+	TASK_DONE: "DONE",
+}
+
 type Task[T any] struct {
 	Id     TaskID
 	Handle func() (T, error)
@@ -23,8 +29,8 @@ type TaskResult[T any] struct {
 	Result T
 }
 
-func NewTask[T any](handle func() (T, error)) Task[T] {
-	return Task[T]{
+func NewTask[T any](handle func() (T, error)) *Task[T] {
+	return &Task[T]{
 		Id:     TaskID(uuid.New().String()),
 		Handle: handle,
 		Status: TASK_PENDING,
