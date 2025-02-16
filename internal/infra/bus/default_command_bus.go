@@ -8,21 +8,21 @@ import (
 	"github.com/henriquemdimer/justconv/internal/domain"
 )
 
-type CommandBus struct {
+type DefaultCommandBus struct {
 	handlers map[string]domain.CommandHandler
 }
 
 func NewCommandBus() domain.CommandBus {
-	return &CommandBus{
+	return &DefaultCommandBus{
 		handlers: make(map[string]domain.CommandHandler),
 	}
 }
 
-func (self *CommandBus) RegisterHandler(name string, handler domain.CommandHandler) {
+func (self *DefaultCommandBus) RegisterHandler(name string, handler domain.CommandHandler) {
 	self.handlers[name] = handler
 }
 
-func (self *CommandBus) Dispatch(command domain.Command) error {
+func (self *DefaultCommandBus) Dispatch(command domain.Command) error {
 	name := strings.Split(fmt.Sprintf("%T", command), ".")[1]
 	handler, ex := self.handlers[name]
 	if ex == false {

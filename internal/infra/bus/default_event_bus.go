@@ -8,21 +8,21 @@ import (
 	"github.com/henriquemdimer/justconv/internal/domain"
 )
 
-type EventBus struct {
+type DefaultEventBus struct {
 	handlers map[string]domain.EventHandler
 }
 
-func NewEventBus() domain.EventBus {
-	return &EventBus{
+func NewDefaultEventBus() domain.EventBus {
+	return &DefaultEventBus{
 		handlers: make(map[string]domain.EventHandler),
 	}
 }
 
-func (self *EventBus) RegisterHandler(name string, handler domain.EventHandler) {
+func (self *DefaultEventBus) RegisterHandler(name string, handler domain.EventHandler) {
 	self.handlers[name] = handler
 }
 
-func (self *EventBus) Publish(event domain.Event) error {
+func (self *DefaultEventBus) Publish(event domain.Event) error {
 	name := strings.Split(fmt.Sprintf("%T", event), ".")[1]
 	handler, exists := self.handlers[name]
 	if !exists {
