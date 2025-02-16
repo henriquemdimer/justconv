@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/henriquemdimer/justconv/internal/domain"
-	"github.com/henriquemdimer/justconv/internal/health"
+	"github.com/henriquemdimer/justconv/internal/presentation/health"
 )
 
 type HTTPServer struct {
