@@ -6,10 +6,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/henriquemdimer/justconv/internal/domain"
+	"github.com/henriquemdimer/justconv/internal/presentation/convert"
 	"github.com/henriquemdimer/justconv/internal/presentation/health"
 )
 
 type HTTPServer struct {
+	commandBus domain.CommandBus
 	options *HTTPServerOptions
 }
 
@@ -31,9 +33,10 @@ func validateOptions(options *HTTPServerOptions) *HTTPServerOptions {
 	return validated
 }
 
-func NewHTTPServer(options *HTTPServerOptions) *HTTPServer {
+func NewHTTPServer(commandBus domain.CommandBus, options *HTTPServerOptions) *HTTPServer {
 	return &HTTPServer{
 		options: validateOptions(options),
+		commandBus: commandBus,
 	}
 }
 
@@ -43,11 +46,11 @@ func (self *HTTPServer) Init() {
 }
 
 func (self *HTTPServer) loadHandlers() chi.Router {
-	cs := []domain.Handler{health.NewHandler()}
+	cs := []domain.Handler{health.Load, convert.Load}
 
 	router := chi.NewRouter()
-	for _, controller := range cs {
-		controller.Load(router)
+	for _, handler := range cs {
+		handler(router, self.commandBus)
 	}
 
 	return router
