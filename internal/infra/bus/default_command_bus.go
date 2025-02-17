@@ -12,7 +12,7 @@ type DefaultCommandBus struct {
 	handlers map[string]domain.CommandHandler
 }
 
-func NewCommandBus() domain.CommandBus {
+func NewDefaultCommandBus() domain.CommandBus {
 	return &DefaultCommandBus{
 		handlers: make(map[string]domain.CommandHandler),
 	}
@@ -29,6 +29,5 @@ func (self *DefaultCommandBus) Dispatch(command domain.Command) error {
 		return errors.New(fmt.Sprintf("Failed to find handler for %s", name))
 	}
 
-	handler(command)
-	return nil
+	return handler(command)
 }
