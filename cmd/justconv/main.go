@@ -11,7 +11,7 @@ import (
 func main() {
 	commandBus := bus.NewDefaultCommandBus()
 	eventBus := bus.NewDefaultEventBus()
-	
+
 	conv_cache := inmemory.NewInMemoryConversionListCache(eventBus)
 	conversor := justconv.New()
 
