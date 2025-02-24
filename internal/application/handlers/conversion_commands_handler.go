@@ -25,9 +25,13 @@ func (self *CommandHandler) CreateUploadHandler(command domain.Command) error {
 		}
 
 		conv := conversion.NewConversion(tmpFile.Name(), cmd.Format)
-		self.conversor.Convert(tmpFile.Name(), cmd.Format)
+		id, err := self.conversor.Convert(tmpFile.Name(), cmd.Format)
+		if err != nil {
+			return errors.New(fmt.Sprintf("Failed to enqueue file to conversion: %s", err.Error()))
+		}
 
-		self.conv_cache.Append(conv)
+		conv.SetTaskId(string(id))
+		self.conv_cache.Save(conv)
 	} else {
 		return errors.New("Invalid command")
 	}

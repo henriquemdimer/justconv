@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/henriquemdimer/justconv/internal/application/handlers"
 	"github.com/henriquemdimer/justconv/internal/infra/bus"
-	"github.com/henriquemdimer/justconv/internal/infra/cache/inmemory"
+	"github.com/henriquemdimer/justconv/internal/infra/persistence/cache/inmemory"
 	"github.com/henriquemdimer/justconv/internal/infra/server"
 	"github.com/henriquemdimer/justconv/pkg/justconv"
 )
