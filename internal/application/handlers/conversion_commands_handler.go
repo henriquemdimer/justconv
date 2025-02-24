@@ -24,7 +24,7 @@ func (self *CommandHandler) CreateUploadHandler(command domain.Command) error {
 			return errors.New("Failed to write in temporary file")
 		}
 
-		conv := conversion.NewConversion(tmpFile.Name(), cmd.Format)
+		conv := conversion.NewConversion(cmd.Id, tmpFile.Name(), cmd.Format)
 		id, err := self.conversor.Convert(tmpFile.Name(), cmd.Format)
 		if err != nil {
 			return errors.New(fmt.Sprintf("Failed to enqueue file to conversion: %s", err.Error()))

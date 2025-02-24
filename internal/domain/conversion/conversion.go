@@ -13,9 +13,11 @@ type Conversion struct {
 	format string
 }
 
-func NewConversion(input string, format string) *Conversion {
-	id := uuid.New().String()
+func GenerateID() string {
+	return uuid.New().String()
+}
 
+func NewConversion(id string, input string, format string) *Conversion {
 	return &Conversion{
 		AggregateRoot:  domain.NewAggregateRoot(&[]domain.Event{ConversionCreated{Id: id, Input: input, Format: format}}),
 		id:    id,

@@ -1,20 +1,22 @@
 package convert
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/henriquemdimer/justconv/internal/application/commands"
 	"github.com/henriquemdimer/justconv/internal/domain"
+	"github.com/henriquemdimer/justconv/internal/domain/conversion"
 )
 
 type Controller struct {
 	commandBus domain.CommandBus
+	writer domain.Writer
 }
 
-func NewController(commandBus domain.CommandBus) *Controller {
+func NewController(commandBus domain.CommandBus, writer domain.Writer) *Controller {
 	return &Controller{
 		commandBus,
+		writer,
 	}
 }
 
@@ -31,10 +33,12 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	id := conversion.GenerateID()
 	err = self.commandBus.Dispatch(commands.CreateUpload{
 		Filename: header.Filename,
 		File: file,
 		Format: "webp",
+		Id: id,
 	})
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -42,7 +46,13 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(200)
-	fmt.Fprintf(w, "OK")
+	self.writer.WriteJson(w, 201, domain.RequestResponse{
+		Message: "Conversion enqueued",
+		Code: 201,
+		Data: map[string]string{
+			"id": id,
+		},
+	})
 }
 
 func (self *Controller) CheckStatus(w http.ResponseWriter, r *http.Request) {}
