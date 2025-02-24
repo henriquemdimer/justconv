@@ -31,11 +31,15 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	self.commandBus.Dispatch(commands.CreateUpload{
+	err = self.commandBus.Dispatch(commands.CreateUpload{
 		Filename: header.Filename,
 		File: file,
 		Format: "webp",
 	})
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
 	w.WriteHeader(200)
 	fmt.Fprintf(w, "OK")
