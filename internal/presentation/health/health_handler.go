@@ -5,7 +5,7 @@ import (
 	"github.com/henriquemdimer/justconv/internal/domain"
 )
 
-func Load(r chi.Router, _ domain.CommandBus) {
-	controller := NewController()
+func Load(r chi.Router, writer domain.Writer, _ domain.CommandBus) {
+	controller := NewController(writer)
 	r.Get("/", controller.GetHealth)
 }

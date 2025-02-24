@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/henriquemdimer/justconv/internal/domain"
+	"github.com/henriquemdimer/justconv/internal/infra/server/helper"
 	"github.com/henriquemdimer/justconv/internal/presentation/convert"
 	"github.com/henriquemdimer/justconv/internal/presentation/health"
 )
@@ -48,9 +49,10 @@ func (self *HTTPServer) Init() {
 func (self *HTTPServer) loadHandlers() chi.Router {
 	cs := []domain.Handler{health.Load, convert.Load}
 
+	writer := helper.NewHTTPWriter()
 	router := chi.NewRouter()
 	for _, handler := range cs {
-		handler(router, self.commandBus)
+		handler(router, writer, self.commandBus)
 	}
 
 	return router

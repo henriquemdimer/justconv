@@ -1,16 +1,24 @@
 package health
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/henriquemdimer/justconv/internal/domain"
 )
 
-type Controller struct {}
+type Controller struct {
+	writer domain.Writer
+}
 
-func NewController() *Controller {
-	return &Controller{}
+func NewController(writer domain.Writer) *Controller {
+	return &Controller{
+		writer,
+	}
 }
 
 func (self *Controller) GetHealth(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "HEALTH OK")
+	self.writer.WriteJson(w, 200, domain.RequestResponse{
+		Message: "HEALTHY",
+		Code: 200,
+	})
 }
