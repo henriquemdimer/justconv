@@ -11,7 +11,8 @@ type CreateUpload struct {
 	Id       string
 }
 
-type SetConversionStatus struct {
-	TaskId string
-	Status string
+type UpdateConversion struct {
+	TaskId     string
+	Status     string
+	OutputPath string
 }

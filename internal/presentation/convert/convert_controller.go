@@ -80,4 +80,18 @@ func (self *Controller) CheckStatus(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (self *Controller) Download(w http.ResponseWriter, r *http.Request) {}
+func (self *Controller) Download(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		self.writer.WriteError(w, 500, nil)
+		return
+	}
+
+	conv, err := bus.QueryAsk[conversion.Conversion](self.queryBus, query.GetConversion{Id: id})
+	if err != nil {
+		self.writer.WriteError(w, 404, nil)
+		return
+	}
+
+	http.ServeFile(w, r, conv.GetOutput())
+}

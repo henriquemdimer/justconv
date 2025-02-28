@@ -20,7 +20,7 @@ func main() {
 
 	commandHandler := handlers.NewCommandHandler(eventBus, conv_cache, conversor)
 	commandBus.RegisterHandler("CreateUpload", commandHandler.CreateUploadHandler)
-	commandBus.RegisterHandler("SetConversionStatus", commandHandler.SetConversionStatus)
+	commandBus.RegisterHandler("UpdateConversion", commandHandler.UpdateConversionHandler)
 
 	queryHandler := handlers.NewQueryHandler(conv_cache)
 	queryBus.RegisterHandler("GetConversion", queryHandler.GetConversion)
@@ -35,9 +35,10 @@ func main() {
 func ListenToConversorEvents(conversor justconv.JustConv, commandBus domain.CommandBus) {
 	conversor.GetEventBus().RegisterHandler(justconv.TaskDoneEvent,
 		func(task *justconv.Task[string]) {
-			commandBus.Dispatch(commands.SetConversionStatus{
+			commandBus.Dispatch(commands.UpdateConversion{
 				TaskId: string(task.Id),
 				Status: justconv.STATUS[justconv.TASK_DONE],
+				OutputPath: task.Result.Result,
 			})
 		})
 }

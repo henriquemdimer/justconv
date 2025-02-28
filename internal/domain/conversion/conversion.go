@@ -8,11 +8,12 @@ import (
 
 type Conversion struct {
 	*domain.AggregateRoot
-	id     string
-	input  string
-	taskId string
-	format string
-	status string
+	id          string
+	input_path  string
+	output_path string
+	taskId      string
+	format      string
+	status      string
 }
 
 func GenerateID() string {
@@ -21,11 +22,13 @@ func GenerateID() string {
 
 func NewConversion(id string, input string, format string) *Conversion {
 	return &Conversion{
-		AggregateRoot:  domain.NewAggregateRoot(&[]domain.Event{ConversionCreated{Id: id, Input: input, Format: format}}),
-		id:    id,
-		format: format,
-		input: input,
-		status: justconv.STATUS[justconv.TASK_PENDING],
+		AggregateRoot: domain.NewAggregateRoot(&[]domain.Event{ConversionCreated{Id: id, Input: input, Format: format}}),
+		id:            id,
+		format:        format,
+		input_path:    input,
+		output_path:   "",
+		status:        justconv.STATUS[justconv.TASK_PENDING],
+		taskId:        "",
 	}
 }
 
@@ -43,6 +46,14 @@ func (self *Conversion) SetTaskId(id string) {
 
 func (self *Conversion) GetTaskId() string {
 	return self.taskId
+}
+
+func (self *Conversion) SetOutputPath(output string) {
+	self.output_path = output
+}
+
+func (self *Conversion) GetOutput() string {
+	return self.output_path
 }
 
 func (self *Conversion) SetStatus(status string) {
