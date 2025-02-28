@@ -50,7 +50,6 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(200)
 	self.writer.WriteJson(w, 201, domain.RequestResponse{
 		Message: "Conversion enqueued",
 		Code:    201,
