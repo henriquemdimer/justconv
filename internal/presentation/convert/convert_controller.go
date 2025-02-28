@@ -13,14 +13,14 @@ import (
 
 type Controller struct {
 	commandBus domain.CommandBus
-	queryBus domain.QueryBus
-	writer domain.Writer
+	queryBus   domain.QueryBus
+	writer     domain.Writer
 }
 
 func NewController(writer domain.Writer, commandBus domain.CommandBus, queryBus domain.QueryBus) *Controller {
 	return &Controller{
 		commandBus,
-		queryBus, 
+		queryBus,
 		writer,
 	}
 }
@@ -28,32 +28,32 @@ func NewController(writer domain.Writer, commandBus domain.CommandBus, queryBus 
 func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(100 << 24)
 	if err != nil {
-		http.Error(w, "Bad Request", http.StatusBadRequest)
+		self.writer.WriteError(w, 400, nil)
 		return
 	}
 
 	file, header, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		self.writer.WriteError(w, 500, nil)
 		return
 	}
 
 	id := conversion.GenerateID()
 	err = self.commandBus.Dispatch(commands.CreateUpload{
 		Filename: header.Filename,
-		File: file,
-		Format: "webp",
-		Id: id,
+		File:     file,
+		Format:   "webp",
+		Id:       id,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		self.writer.WriteError(w, 500, nil)
 		return
 	}
 
 	w.WriteHeader(200)
 	self.writer.WriteJson(w, 201, domain.RequestResponse{
 		Message: "Conversion enqueued",
-		Code: 201,
+		Code:    201,
 		Data: map[string]string{
 			"id": id,
 		},
@@ -63,13 +63,13 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 func (self *Controller) CheckStatus(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
-		http.Error(w, "Bad Request", 400)
+		self.writer.WriteError(w, 500, nil)
 		return
 	}
 
 	conv, err := bus.QueryAsk[conversion.Conversion](self.queryBus, query.GetConversion{Id: id})
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		self.writer.WriteError(w, 404, nil)
 		return
 	}
 

@@ -6,6 +6,12 @@ type RequestResponse struct {
 	Code    int               `json:"code"`
 }
 
+type RequestResponseError struct {
+	Code  int    `json:"code"`
+	Error string `json:"error"`
+}
+
 type Writer interface {
-	WriteJson(any, int, RequestResponse) error
+	WriteJson(interface{}, int, RequestResponse) error
+	WriteError(interface{}, int, *RequestResponseError) error
 }
