@@ -3,6 +3,7 @@ package conversion
 import (
 	"github.com/google/uuid"
 	"github.com/henriquemdimer/justconv/internal/domain"
+	"github.com/henriquemdimer/justconv/pkg/justconv"
 )
 
 type Conversion struct {
@@ -11,6 +12,7 @@ type Conversion struct {
 	input  string
 	taskId string
 	format string
+	status string
 }
 
 func GenerateID() string {
@@ -23,6 +25,7 @@ func NewConversion(id string, input string, format string) *Conversion {
 		id:    id,
 		format: format,
 		input: input,
+		status: justconv.STATUS[justconv.TASK_PENDING],
 	}
 }
 
@@ -30,8 +33,8 @@ func (self *Conversion) GetId() string {
 	return self.id
 }
 
-func (self *Conversion) Get() *Conversion {
-	return self
+func (self *Conversion) GetStatus() string {
+	return self.status
 }
 
 func (self *Conversion) SetTaskId(id string) {

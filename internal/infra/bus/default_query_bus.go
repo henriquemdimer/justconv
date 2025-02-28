@@ -31,3 +31,21 @@ func (self *DefaultQueryBus) Ask(query domain.Query) (interface{}, error) {
 
 	return handler(query)
 }
+
+func QueryAsk[T any](bus domain.QueryBus, query domain.Query) (*T, error) {
+	hret, err := bus.Ask(query)
+	if err != nil {
+		return nil, err
+	}
+
+	data, ok := hret.(*T)
+	if !ok {
+		return nil, errors.New("Failed to type assert handler return")
+	}
+
+	if hret == nil || data == nil {
+		return nil, errors.New("NIL return from query handler")
+	}
+
+	return data, nil
+}

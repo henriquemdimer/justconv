@@ -11,6 +11,7 @@ import (
 func main() {
 	commandBus := bus.NewDefaultCommandBus()
 	eventBus := bus.NewDefaultEventBus()
+	queryBus := bus.NewDefaultQueryBus()
 
 	conv_cache := inmemory.NewInMemoryConversionListCache(eventBus)
 	conversor := justconv.New()
@@ -18,7 +19,10 @@ func main() {
 	commandHandler := handlers.NewCommandHandler(eventBus, conv_cache, conversor)
 	commandBus.RegisterHandler("CreateUpload", commandHandler.CreateUploadHandler)
 
-	sv := server.NewHTTPServer(commandBus, nil)
+	queryHandler := handlers.NewQueryHandler(conv_cache)
+	queryBus.RegisterHandler("GetConversion", queryHandler.GetConversion)
+
+	sv := server.NewHTTPServer(commandBus, queryBus, nil)
 	go conversor.Init()
 	sv.Init()
 }

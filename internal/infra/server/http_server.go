@@ -13,6 +13,7 @@ import (
 
 type HTTPServer struct {
 	commandBus domain.CommandBus
+	queryBus domain.QueryBus
 	options *HTTPServerOptions
 }
 
@@ -34,10 +35,11 @@ func validateOptions(options *HTTPServerOptions) *HTTPServerOptions {
 	return validated
 }
 
-func NewHTTPServer(commandBus domain.CommandBus, options *HTTPServerOptions) *HTTPServer {
+func NewHTTPServer(commandBus domain.CommandBus, queryBus domain.QueryBus, options *HTTPServerOptions) *HTTPServer {
 	return &HTTPServer{
 		options: validateOptions(options),
 		commandBus: commandBus,
+		queryBus: queryBus,
 	}
 }
 
@@ -52,7 +54,7 @@ func (self *HTTPServer) loadHandlers() chi.Router {
 	writer := helper.NewHTTPWriter()
 	router := chi.NewRouter()
 	for _, handler := range cs {
-		handler(router, writer, self.commandBus)
+		handler(router, writer, self.commandBus, self.queryBus)
 	}
 
 	return router

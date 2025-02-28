@@ -5,8 +5,8 @@ import (
 	"github.com/henriquemdimer/justconv/internal/domain"
 )
 
-func Load(r chi.Router, writer domain.Writer, commandBus domain.CommandBus) {
-	controller := NewController(commandBus, writer)
+func Load(r chi.Router, writer domain.Writer, commandBus domain.CommandBus, queryBus domain.QueryBus) {
+	controller := NewController(writer, commandBus, queryBus)
 
 	r.Route("/convert", func(group chi.Router) {
 		group.Post("/", controller.Convert)
