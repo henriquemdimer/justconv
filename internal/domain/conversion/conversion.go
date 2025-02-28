@@ -40,3 +40,11 @@ func (self *Conversion) GetStatus() string {
 func (self *Conversion) SetTaskId(id string) {
 	self.taskId = id
 }
+
+func (self *Conversion) GetTaskId() string {
+	return self.taskId
+}
+
+func (self *Conversion) SetStatus(status string) {
+	self.status = status
+}

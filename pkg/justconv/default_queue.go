@@ -1,24 +1,26 @@
 package justconv
 
 type DefaultQueue[T any] struct {
-	tasks       map[TaskID]*Task[T]
+	tasks       map[TaskID]*Task[string]
 	options     DefaultQueueOptions
-	task_chan   chan *Task[T]
+	task_chan   chan *Task[string]
 	exit_chan   chan int
-	result_chan chan TaskResult[T]
+	result_chan chan TaskResult[string]
+	events      *EventBus
 }
 
 type DefaultQueueOptions struct {
 	Workers int
 }
 
-func NewDefaultQueue[T any](options *DefaultQueueOptions) *DefaultQueue[T] {
+func NewDefaultQueue[T any](events *EventBus, options *DefaultQueueOptions) *DefaultQueue[T] {
 	return &DefaultQueue[T]{
-		tasks:       make(map[TaskID]*Task[T]),
+		tasks:       make(map[TaskID]*Task[string]),
 		options:     validateOptions(options),
-		task_chan:   make(chan *Task[T]),
+		task_chan:   make(chan *Task[string]),
 		exit_chan:   make(chan int),
-		result_chan: make(chan TaskResult[T]),
+		result_chan: make(chan TaskResult[string]),
+		events:      events,
 	}
 }
 
@@ -64,6 +66,7 @@ out:
 			task.Status = TASK_DONE
 
 			self.tasks[task.Id] = task
+			self.events.Emit(TaskDoneEvent, task)
 		case <-self.exit_chan:
 			break out
 		}
@@ -74,7 +77,7 @@ func (self *DefaultQueue[T]) Deinit() {
 	self.exit_chan <- 1
 }
 
-func (self *DefaultQueue[T]) Enqueue(task *Task[T]) TaskID {
+func (self *DefaultQueue[T]) Enqueue(task *Task[string]) TaskID {
 	self.tasks[task.Id] = task
 
 	go func() {
@@ -84,6 +87,6 @@ func (self *DefaultQueue[T]) Enqueue(task *Task[T]) TaskID {
 	return task.Id
 }
 
-func (self *DefaultQueue[T]) GetTask(task_id TaskID) *Task[T] {
+func (self *DefaultQueue[T]) GetTask(task_id TaskID) *Task[string] {
 	return self.tasks[task_id]
 }

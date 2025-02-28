@@ -43,3 +43,13 @@ func (self *InMemoryConversionListCache) Remove(id string) {
 func (self *InMemoryConversionListCache) Get(id string) *conversion.Conversion {
 	return self.list[id]
 }
+
+func (self *InMemoryConversionListCache) GetByTaskId(task_id string) *conversion.Conversion {
+	for _, conv := range self.list {
+		if conv.GetTaskId() == task_id {
+			return conv
+		}
+	}
+
+	return nil
+}

@@ -11,12 +11,15 @@ import (
 type JustConv struct {
 	drivers []ConvDriver
 	queue Queue[string]
+	events *EventBus
 }
 
 func New() *JustConv {
+	eventBus := NewEventBus()
 	return &JustConv{
 		drivers: []ConvDriver{drivers.NewFFmpegDriver()},
-		queue: NewDefaultQueue[string](nil),
+		queue: NewDefaultQueue[string](eventBus, nil),
+		events: eventBus,
 	}
 }
 
@@ -60,4 +63,8 @@ func (self *JustConv) Deinit() {
 
 func (self *JustConv) GetQueue() Queue[string] {
 	return self.queue
+}
+
+func (self *JustConv) GetEventBus() *EventBus {
+	return self.events
 }

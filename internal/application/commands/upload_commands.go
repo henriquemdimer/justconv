@@ -10,3 +10,8 @@ type CreateUpload struct {
 	Format   string
 	Id       string
 }
+
+type SetConversionStatus struct {
+	TaskId string
+	Status string
+}

@@ -38,3 +38,19 @@ func (self *CommandHandler) CreateUploadHandler(command domain.Command) error {
 
 	return nil
 }
+
+func (self *CommandHandler) SetConversionStatus(command domain.Command) error {
+	if cmd, ok := command.(commands.SetConversionStatus); ok {
+		conv := self.conv_cache.GetByTaskId(cmd.TaskId)
+		if conv == nil {
+			return errors.New("Failed to find conversion in cache")
+		}
+
+		conv.SetStatus(cmd.Status)
+		self.conv_cache.Save(conv)
+
+		return nil
+	} else {
+		return errors.New("Invalid command")
+	}
+}
