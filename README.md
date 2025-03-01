@@ -5,6 +5,7 @@ The backend will be responsible for processing conversions, managing queues, sec
 
 ### **1.1 API and Access Control**
 - [x] Create **open REST API**, no authentication required, but with mechanisms to prevent abuse.
+- [ ] Implement optional authentication/authorization as enabled in the configuration file
 - [ ] Restrict access to files to the user who uploaded them.
   - [x] Create **unique tokens** for each upload and conversion.
   - [ ] Implement **temporary file-user association** (e.g., via user IP or another identifier).
