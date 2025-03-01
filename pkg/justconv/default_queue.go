@@ -1,5 +1,9 @@
 package justconv
 
+import (
+	"runtime"
+)
+
 type DefaultQueue[T any] struct {
 	tasks       map[TaskID]*Task[string]
 	options     DefaultQueueOptions
@@ -26,7 +30,7 @@ func NewDefaultQueue[T any](events *EventBus, options *DefaultQueueOptions) *Def
 
 func validateOptions(options *DefaultQueueOptions) DefaultQueueOptions {
 	validatedOptions := &DefaultQueueOptions{
-		Workers: 2,
+		Workers: runtime.NumCPU(),
 	}
 
 	if options != nil {

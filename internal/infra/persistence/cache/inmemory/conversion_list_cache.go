@@ -14,12 +14,19 @@ type InMemoryConversionListCache struct {
 	eventBus domain.EventBus
 }
 
+var instance *InMemoryConversionListCache
+var once sync.Once
+
 func NewInMemoryConversionListCache(eventBus domain.EventBus) cache.ConversionListCache {
-	return &InMemoryConversionListCache{
-		list: make(map[string]*conversion.Conversion),
-		mu:   sync.Mutex{},
-		eventBus: eventBus,
-	}
+	once.Do(func() {
+		instance = &InMemoryConversionListCache{
+			list:     make(map[string]*conversion.Conversion),
+			mu:       sync.Mutex{},
+			eventBus: eventBus,
+		}
+	})
+
+	return instance
 }
 
 func (self *InMemoryConversionListCache) Save(conv *conversion.Conversion) {
