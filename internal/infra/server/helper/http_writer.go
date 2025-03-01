@@ -46,6 +46,10 @@ func (self *HTTPWriter) WriteError(wr interface{},
 		if response.Error == "" {
 			response.Error = getErrorMessage(status)
 		}
+
+		if response.Code == 0 {
+			response.Code = status
+		}
 	}
 
 	json.NewEncoder(w).Encode(response)
