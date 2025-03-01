@@ -59,3 +59,7 @@ func (self *Conversion) GetOutput() string {
 func (self *Conversion) SetStatus(status string) {
 	self.status = status
 }
+
+func (self *Conversion) GetFormat() string {
+	return self.format
+}

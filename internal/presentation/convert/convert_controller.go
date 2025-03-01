@@ -26,6 +26,14 @@ func NewController(writer domain.Writer, commandBus domain.CommandBus, queryBus 
 }
 
 func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
+	format := r.URL.Query().Get("format")
+	if format == "" {
+		self.writer.WriteError(w, 400, &domain.RequestResponseError{
+			Error: "Missing format url query param",
+		})
+		return
+	}
+
 	err := r.ParseMultipartForm(100 << 24)
 	if err != nil {
 		self.writer.WriteError(w, 400, nil)
@@ -42,11 +50,13 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 	err = self.commandBus.Dispatch(commands.CreateUpload{
 		Filename: header.Filename,
 		File:     file,
-		Format:   "webp",
+		Format:   format,
 		Id:       id,
 	})
 	if err != nil {
-		self.writer.WriteError(w, 500, nil)
+		self.writer.WriteError(w, 500, &domain.RequestResponseError{
+			Error: err.Error(),
+		})
 		return
 	}
 
@@ -77,7 +87,9 @@ func (self *Controller) CheckStatus(w http.ResponseWriter, r *http.Request) {
 	self.writer.WriteJson(w, 200, domain.RequestResponse{
 		Code: 200,
 		Data: map[string]string{
+			"id": conv.GetId(),
 			"status": conv.GetStatus(),
+			"format": conv.GetFormat(),
 		},
 	})
 }
