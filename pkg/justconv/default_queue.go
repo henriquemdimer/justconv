@@ -1,6 +1,7 @@
 package justconv
 
 import (
+	"errors"
 	"runtime"
 )
 
@@ -11,6 +12,7 @@ type DefaultQueue[T any] struct {
 	exit_chan   chan int
 	result_chan chan TaskResult[string]
 	events      *EventBus
+	exiting     bool
 }
 
 type DefaultQueueOptions struct {
@@ -25,6 +27,7 @@ func NewDefaultQueue[T any](events *EventBus, options *DefaultQueueOptions) *Def
 		exit_chan:   make(chan int),
 		result_chan: make(chan TaskResult[string]),
 		events:      events,
+		exiting:     false,
 	}
 }
 
@@ -70,25 +73,55 @@ out:
 			task.Status = TASK_DONE
 
 			self.tasks[task.Id] = task
-			self.events.Emit(TaskDoneEvent, task)
+			go self.events.Emit(TaskDoneEvent, task)
+
+			if self.exiting {
+				pending_tasks := self.checkPendingTasks()
+				if len(pending_tasks) <= 0 {
+					close(self.exit_chan)
+				}
+			}
 		case <-self.exit_chan:
 			break out
 		}
 	}
 }
 
-func (self *DefaultQueue[T]) Deinit() {
-	self.exit_chan <- 1
+func (self *DefaultQueue[T]) checkPendingTasks() map[string]*Task[string] {
+	pending_tasks := make(map[string]*Task[string])
+
+	for _, task := range self.tasks {
+		if task.Status == TASK_PENDING {
+			pending_tasks[string(task.Id)] = task
+		}
+	}
+
+	return pending_tasks
 }
 
-func (self *DefaultQueue[T]) Enqueue(task *Task[string]) TaskID {
-	self.tasks[task.Id] = task
+func (self *DefaultQueue[T]) Deinit() {
+	self.exiting = true
 
+	pending_tasks := self.checkPendingTasks()
+	if len(pending_tasks) <= 0 {
+		close(self.exit_chan)
+	} else {
+		_ = <- self.exit_chan
+		return
+	}
+}
+
+func (self *DefaultQueue[T]) Enqueue(task *Task[string]) (TaskID, error) {
+	if self.exiting {
+		return "", errors.New("Queue is exiting, cannot enqueue new tasks.")
+	}
+
+	self.tasks[task.Id] = task
 	go func() {
 		self.task_chan <- task
 	}()
 
-	return task.Id
+	return task.Id, nil
 }
 
 func (self *DefaultQueue[T]) GetTask(task_id TaskID) *Task[string] {

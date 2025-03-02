@@ -13,8 +13,9 @@ import (
 
 type HTTPServer struct {
 	commandBus domain.CommandBus
-	queryBus domain.QueryBus
-	options *HTTPServerOptions
+	queryBus   domain.QueryBus
+	options    *HTTPServerOptions
+	server     *http.Server
 }
 
 type HTTPServerOptions struct {
@@ -37,15 +38,24 @@ func validateOptions(options *HTTPServerOptions) *HTTPServerOptions {
 
 func NewHTTPServer(commandBus domain.CommandBus, queryBus domain.QueryBus, options *HTTPServerOptions) *HTTPServer {
 	return &HTTPServer{
-		options: validateOptions(options),
+		options:    validateOptions(options),
 		commandBus: commandBus,
-		queryBus: queryBus,
+		queryBus:   queryBus,
 	}
 }
 
 func (self *HTTPServer) Init() {
+	self.server = &http.Server{
+		Addr: fmt.Sprintf(":%s", self.options.Port),
+	}
+
 	r := self.loadHandlers()
-	http.ListenAndServe(fmt.Sprintf(":%s", self.options.Port), r)
+	self.server.Handler = r
+	self.server.ListenAndServe()
+}
+
+func (self *HTTPServer) Deinit() {
+	self.server.Shutdown(nil)
 }
 
 func (self *HTTPServer) loadHandlers() chi.Router {
