@@ -44,12 +44,11 @@ func NewHTTPServer(commandBus domain.CommandBus, queryBus domain.QueryBus, optio
 	}
 }
 
-func (self *HTTPServer) Init() {
+func (self *HTTPServer) Init(r http.Handler) {
 	self.server = &http.Server{
 		Addr: fmt.Sprintf(":%s", self.options.Port),
 	}
 
-	r := self.loadHandlers()
 	self.server.Handler = r
 	self.server.ListenAndServe()
 }
@@ -58,7 +57,7 @@ func (self *HTTPServer) Deinit() {
 	self.server.Shutdown(nil)
 }
 
-func (self *HTTPServer) loadHandlers() chi.Router {
+func (self *HTTPServer) LoadHandlers() chi.Router {
 	cs := []domain.Handler{health.Load, convert.Load}
 
 	writer := helper.NewHTTPWriter()

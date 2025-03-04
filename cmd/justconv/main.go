@@ -10,9 +10,11 @@ import (
 	"github.com/henriquemdimer/justconv/internal/application/handlers"
 	"github.com/henriquemdimer/justconv/internal/domain"
 	"github.com/henriquemdimer/justconv/internal/infra/bus"
+	"github.com/henriquemdimer/justconv/internal/infra/notifier"
 	"github.com/henriquemdimer/justconv/internal/infra/persistence/cache/inmemory"
-	"github.com/henriquemdimer/justconv/internal/infra/server"
 	"github.com/henriquemdimer/justconv/pkg/justconv"
+	"github.com/henriquemdimer/justconv/internal/infra/server"
+	"github.com/henriquemdimer/justconv/internal/infra/server/ws"
 )
 
 func main() {
@@ -31,10 +33,18 @@ func main() {
 	queryBus.RegisterHandler("GetConversion", queryHandler.GetConversion)
 
 	ListenToConversorEvents(*conversor, commandBus)
-	sv := server.NewHTTPServer(commandBus, queryBus, nil)
+	sv := server.NewHTTPServer(commandBus, queryBus, nil)	
+	ws_server := ws.NewWebsocketServer()
+
+	_notifier := notifier.NewWebsocketNotifier(ws_server)
+	eventHandler := handlers.NewEventHandler(_notifier)
+	eventBus.RegisterHandler("ConversionUpdated", eventHandler.ConversionUpdatedHandler)
+
+	handler := sv.LoadHandlers()
+	handler.Get("/ws", ws_server.Upgrade)
 
 	go conversor.Init()
-	go sv.Init()
+	go sv.Init(handler)
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)

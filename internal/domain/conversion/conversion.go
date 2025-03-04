@@ -57,6 +57,10 @@ func (self *Conversion) GetOutput() string {
 }
 
 func (self *Conversion) SetStatus(status string) {
+	self.AppendEvent(ConversionUpdated{
+		Id: self.id,
+		Status: status,
+	})
 	self.status = status
 }
 
