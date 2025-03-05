@@ -32,7 +32,7 @@ The backend will be responsible for processing conversions, managing queues, sec
 
 ### **1.4 WebSockets and Notifications**
 - [ ] Implement **WebSockets** for:
-  - [ ] Notifying the frontend about **conversion status changes** (pending, processing, completed, error).
+  - [x] Notifying the frontend about **conversion status changes** (pending, processing, completed, error).
   - [ ] Updating the user interface in real-time.
 - [ ] Create a **fallback mechanism** for users without WebSocket support (e.g., HTTP polling).
 
