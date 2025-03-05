@@ -6,20 +6,21 @@ import (
 	"strings"
 
 	"github.com/henriquemdimer/justconv/pkg/justconv/drivers"
+	"slices"
 )
 
 type JustConv struct {
 	drivers []ConvDriver
-	queue Queue[string]
-	events *EventBus
+	queue   Queue[string]
+	events  *EventBus
 }
 
 func New() *JustConv {
 	eventBus := NewEventBus()
 	return &JustConv{
 		drivers: []ConvDriver{drivers.NewFFmpegDriver()},
-		queue: NewDefaultQueue[string](eventBus, nil),
-		events: eventBus,
+		queue:   NewDefaultQueue[string](eventBus, nil),
+		events:  eventBus,
 	}
 }
 
@@ -28,10 +29,8 @@ func (self *JustConv) GetDriver(input_format string, output_format string) ConvD
 		supported_formats := driver.GetSupportedFormats()
 		group := supported_formats[input_format]
 
-		for _, tformat := range group {
-			if tformat == output_format {
-				return driver
-			}
+		if slices.Contains(group, output_format) {
+			return driver
 		}
 	}
 
