@@ -1,0 +1,19 @@
+.conversor__panel {
+  width: 100%;
+  height: calc(100svh - 62px - 30px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.queue__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__metrics {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

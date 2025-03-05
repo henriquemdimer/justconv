@@ -1,0 +1,51 @@
+.panel {
+  --padding: 10px;
+  --b-radius: 10px;
+
+  background-color: white;
+  width: 100%;
+  max-width: 41%;
+  height: 400px;
+  border-radius: var(--b-radius);
+  position: relative;
+
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.23);
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.23);
+
+  .panel__header {
+    padding: var(--padding);
+    border-top-right-radius: var(--b-radius);
+    border-top-left-radius: var(--b-radius);
+    width: 100%;
+    height: 40px;
+  } 
+
+  .panel__footer {
+    width: 100%;
+    height: 45px;
+    position: absolute;
+    bottom: 0;
+    border-bottom-right-radius: var(--b-radius);
+    border-bottom-left-radius: var(--b-radius);
+    overflow: hidden;
+
+    .panel__button { 
+      background-color: var(--detail);
+      height: 100%;
+      outline: none;
+      border: none;
+      color: white;
+      float: right;
+      width: 130px;
+      font-size: 20px;
+      font-weight: bolder;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+      border-top-left-radius: var(--b-radius);
+    }
+  }
+}
