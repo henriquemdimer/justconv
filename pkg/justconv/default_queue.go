@@ -45,23 +45,26 @@ func validateOptions(options *DefaultQueueOptions) DefaultQueueOptions {
 	return *validatedOptions
 }
 
-func worker[T any](task_chan chan *Task[T], exit chan int, result_chan chan TaskResult[T]) {
+func (self *DefaultQueue[T]) worker() {
 out:
 	for {
 		select {
-		case task := <-task_chan:
+		case task := <-self.task_chan:
+			task.Status = TASK_RUNNING
+			go self.events.Emit(TaskStatusUpdateEvent, task)
+
 			data, _ := task.Handle()
 			result := NewTaskResult(task.Id, data)
-			result_chan <- result
-		case <-exit:
+			self.result_chan <- result
+		case <-self.exit_chan:
 			break out
 		}
 	}
 }
 
 func (self *DefaultQueue[T]) Init() {
-	for i := 0; i < self.options.Workers; i++ {
-		go worker(self.task_chan, self.exit_chan, self.result_chan)
+	for range self.options.Workers {
+		go self.worker()
 	}
 
 out:
@@ -73,7 +76,7 @@ out:
 			task.Status = TASK_DONE
 
 			self.tasks[task.Id] = task
-			go self.events.Emit(TaskDoneEvent, task)
+			go self.events.Emit(TaskStatusUpdateEvent, task)
 
 			if self.exiting {
 				pending_tasks := self.checkPendingTasks()
@@ -106,7 +109,7 @@ func (self *DefaultQueue[T]) Deinit() {
 	if len(pending_tasks) <= 0 {
 		close(self.exit_chan)
 	} else {
-		_ = <- self.exit_chan
+		_ = <-self.exit_chan
 		return
 	}
 }

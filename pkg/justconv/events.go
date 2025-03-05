@@ -2,7 +2,7 @@ package justconv
 
 const (
 	TaskCreatedEvent = iota
-	TaskDoneEvent
+	TaskStatusUpdateEvent
 )
 
 type Handler func(ev *Task[string])

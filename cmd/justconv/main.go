@@ -57,12 +57,18 @@ func main() {
 }
 
 func ListenToConversorEvents(conversor justconv.JustConv, commandBus domain.CommandBus) {
-	conversor.GetEventBus().RegisterHandler(justconv.TaskDoneEvent,
+	conversor.GetEventBus().RegisterHandler(justconv.TaskStatusUpdateEvent,
 		func(task *justconv.Task[string]) {
+			output := ""
+			
+			if task.Result != nil {
+				output = task.Result.Result
+			}
+
 			commandBus.Dispatch(commands.UpdateConversion{
 				TaskId:     string(task.Id),
-				Status:     justconv.STATUS[justconv.TASK_DONE],
-				OutputPath: task.Result.Result,
+				Status:     justconv.STATUS[task.Status],
+				OutputPath: output,
 			})
 		})
 }

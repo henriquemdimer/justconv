@@ -9,12 +9,14 @@ const (
 	TASK_PENDING = iota
 	TASK_FAILED
 	TASK_DONE
+	TASK_RUNNING
 )
 
 var STATUS = map[TaskStatus]string{
 	TASK_PENDING: "PENDING",
-	TASK_FAILED: "FAILED",
-	TASK_DONE: "DONE",
+	TASK_FAILED:  "FAILED",
+	TASK_DONE:    "DONE",
+	TASK_RUNNING: "RUNNING",
 }
 
 type Task[T any] struct {
