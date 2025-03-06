@@ -1,40 +1,20 @@
-import { JSX } from "solid-js/jsx-runtime";
-import { FaSolidArrowRightLong } from 'solid-icons/fa'
+import { JSX } from "solid-js";
 import "./index.scss";
 
 export interface PanelProps {
-  children: JSX.Element;
+  children?: JSX.Element;
+  small?: boolean;
+  dynamic?: boolean;
 }
 
-export function Container(props: PanelProps) {
+export function Panel(props: PanelProps) {
   return (
-    <div class="panel">
+    <div
+      class={`panel ${props.small ? "panel--small" : ""} ${
+        props.dynamic ? "panel--dynamic" : ""
+      }`}
+    >
       {props.children}
     </div>
   );
-}
-
-export function Header(props: PanelProps) {
-  return (
-    <div class="panel__header">
-      {props.children}
-    </div>
-  );
-}
-
-export function Footer(props: PanelProps) {
-  return (
-    <div class="panel__footer">
-		{props.children}
-    </div>
-  );
-}
-
-export function Button() {
-	return (
-		<button type="button" class="panel__button">
-			Convert 
-			<FaSolidArrowRightLong />
-		</button>
-	)
 }
