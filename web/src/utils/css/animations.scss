@@ -1,7 +1,11 @@
-@mixin shrink($fac: .9, $target: "&") {
+@mixin shrink($fac: .9, $target: "&", $absolute_middle: false) {
   &:active {
     #{$target} {
-      transform: scale($fac);
+      @if $absolute_middle {
+        transform: scale($fac) translate(-50%, -50%);
+      } @else {
+        transform: scale($fac);
+      }
     }
   }
 }

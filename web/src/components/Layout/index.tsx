@@ -5,7 +5,6 @@ import Sidebar from "../Sidebar/index.tsx";
 import { FaSolidArrowUpRightFromSquare } from "solid-icons/fa";
 import "./index.scss";
 import DragNDrop from "../DragNDrop/index.tsx";
-import * as Queue from "../Queue/index.tsx";
 import NotImplAlert from "../NotImplAlert/index.tsx";
 
 export default function Layout() {
@@ -34,43 +33,8 @@ export default function Layout() {
           <Panel dynamic>
             <div class="flex full-height flex-column gap">
               <div class="row flex flex-column gap">
-                <small class="small-text">Enqueued conversions</small>
+                <small class="small-text">Conversion queue</small>
                 <DragNDrop />
-              </div>
-              <div class="flex row flex-column gap">
-                <small class="small-text">Completed conversions</small>
-                <Queue.Container>
-                  <Queue.Item
-                    status="Pending"
-                    label="convert-this.jpg"
-                    format="JPG -> PNG"
-                    size="1.2MB"
-                  />
-                  <Queue.Item
-                    status="Pending"
-                    label="convert-this.jpg"
-                    format="JPG -> PNG"
-                    size="1.2MB"
-                  />
-                  <Queue.Item
-                    status="Pending"
-                    label="convert-this.jpg"
-                    format="JPG -> PNG"
-                    size="1.2MB"
-                  />
-                  <Queue.Item
-                    status="Pending"
-                    label="convert-this.jpg"
-                    format="JPG -> PNG"
-                    size="1.2MB"
-                  />
-                  <Queue.Item
-                    status="Pending"
-                    label="convert-this.jpg"
-                    format="JPG -> PNG"
-                    size="1.2MB"
-                  />
-                </Queue.Container>
               </div>
             </div>
           </Panel>
