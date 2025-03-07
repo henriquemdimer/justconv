@@ -10,27 +10,41 @@
   &__item {
     width: 100%;
     background-color: white;
-    padding: 10px;
+    height: 150px;
+    padding: 0 10px;
     border-radius: var(--border-radius-small);
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    & > button {
+    &>button {
       padding: 5px 7px;
       font-size: 20px;
     }
 
-    &__status {
+    &__infos {
       display: flex;
       align-items: center;
-      gap: 5px;
+      justify-content: space-between;
+      width: 100%;
+      overflow-y: auto;
+      white-space: nowrap;
 
-      &__dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: yellow;
+      &>div, &>span {
+        margin-right: 20px;
+      }
+
+      &__status {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        &__dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: yellow;
+        }
       }
     }
   }

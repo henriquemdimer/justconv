@@ -13,7 +13,7 @@ export default function Layout() {
     <Container class="full-height">
       <div id="layout">
         <div class="flex full-width gap">
-          <div class="flex flex-column gap">
+          <div class="sidebar flex flex-column gap">
             <Panel>
               <Sidebar />
             </Panel>
@@ -74,7 +74,7 @@ export default function Layout() {
               </div>
             </div>
           </Panel>
-          <Panel>
+          <Panel class="sidebar">
             <div class="full-height">
               <NotImplAlert />
             </div>

@@ -5,6 +5,7 @@ export interface PanelProps {
   children?: JSX.Element;
   small?: boolean;
   dynamic?: boolean;
+  class?: string;
 }
 
 export function Panel(props: PanelProps) {
@@ -12,7 +13,7 @@ export function Panel(props: PanelProps) {
     <div
       class={`panel ${props.small ? "panel--small" : ""} ${
         props.dynamic ? "panel--dynamic" : ""
-      }`}
+      } ${props.class}`}
     >
       {props.children}
     </div>
