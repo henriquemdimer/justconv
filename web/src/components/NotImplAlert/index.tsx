@@ -10,8 +10,8 @@ export default function NotImplAlert() {
         <RiSystemAlertLine />
       </i>
       <span>
-        This feature is not implemented yet, but you can speed things up by
-        contributing with us on our Github repository.
+        This feature is not implemented yet, but you can help speed things up by
+        contributing to our GitHub repository
       </span>
       <Button
         label="Github"
