@@ -5,12 +5,14 @@
   font-family: 'Inter', sans-serif;
 }
 
-body, html {
+body,
+html {
   background-color: var(--secondary);
   height: 100svh;
-} 
+}
 
-.full-height, #root {
+.full-height,
+#root {
   height: 100%;
 }
 
@@ -18,11 +20,21 @@ body, html {
   width: 100%;
 }
 
+i {
+  display: flex;
+  align-items: center;
+}
+
 :root {
   --primary: rgb(235, 235, 235);
   --secondary: white;
+  --detail: dodgerblue;
 
   --border-padding: 20px;
   --border-radius: 10px;
+  --border-radius-small: 6px;
   --gap: 20px;
+
+  --transition: .2s;
+  --transition-fast: .1s;
 }

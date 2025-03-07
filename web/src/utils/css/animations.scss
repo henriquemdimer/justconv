@@ -1,0 +1,7 @@
+@mixin shrink($fac: .9, $target: "&") {
+  &:active {
+    #{$target} {
+      transform: scale($fac);
+    }
+  }
+}

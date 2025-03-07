@@ -1,16 +1,20 @@
 .panel {
   display: flex;
   height: 100%;
-  min-width: 225px;
+  min-width: 250px;
+  max-width: 250px;
   flex-direction: column;
   background-color: var(--primary);
   border-radius: var(--border-radius);
+  padding: 20px;
+  overflow: hidden;
 
   &--small {
-    height: 200px;
+    height: 300px;
   }
 
   &--dynamic {
     width: 100%;
+    max-width: none;
   }
 }
