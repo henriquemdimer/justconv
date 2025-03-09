@@ -1,5 +1,6 @@
 import Button from "../Button/index.tsx";
 import "./index.scss";
+import { FaLink } from "react-icons/fa6";
 
 export default function NotImplAlert() {
   return (
@@ -12,6 +13,7 @@ export default function NotImplAlert() {
       </span>
       <Button
         label="Github"
+		leftIcon={<FaLink />}
       />
     </div>
   );

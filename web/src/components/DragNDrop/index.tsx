@@ -1,4 +1,5 @@
 import "./index.scss";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 export default function DragNDrop() {
   return (
@@ -6,6 +7,7 @@ export default function DragNDrop() {
       <input id="fileUpload" type="file" />
       <div>
         <i>
+			<IoCloudUploadOutline />
         </i>
         Drop Files or Click Here
       </div>

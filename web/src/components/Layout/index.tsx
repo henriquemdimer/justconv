@@ -5,6 +5,7 @@ import Sidebar from "../Sidebar/index.tsx";
 import "./index.scss";
 import DragNDrop from "../DragNDrop/index.tsx";
 import NotImplAlert from "../NotImplAlert/index.tsx";
+import { FaLink } from "react-icons/fa6";
 
 export default function Layout() {
 	return (
@@ -24,6 +25,7 @@ export default function Layout() {
 								</p>
 								<Button
 									label="Github"
+									leftIcon={<FaLink />}
 								/>
 							</div>
 						</Panel>
