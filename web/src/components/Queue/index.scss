@@ -10,7 +10,8 @@
   &__item {
     width: 100%;
     background-color: white;
-    height: 150px;
+    max-height: 40px;
+    min-height: 40px;
     padding: 0 10px;
     border-radius: var(--border-radius-small);
     display: flex;

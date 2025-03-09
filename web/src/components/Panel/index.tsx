@@ -1,21 +1,20 @@
-import { JSX } from "solid-js";
+import { ReactNode } from "react";
 import "./index.scss";
 
 export interface PanelProps {
-  children?: JSX.Element;
-  small?: boolean;
-  dynamic?: boolean;
-  class?: string;
+	children?: ReactNode;
+	small?: boolean;
+	dynamic?: boolean;
+	className?: string;
 }
 
 export function Panel(props: PanelProps) {
-  return (
-    <div
-      class={`panel ${props.small ? "panel--small" : ""} ${
-        props.dynamic ? "panel--dynamic" : ""
-      } ${props.class}`}
-    >
-      {props.children}
-    </div>
-  );
+	return (
+		<div
+			className={`panel ${props.small ? "panel--small" : ""} ${props.dynamic ? "panel--dynamic" : ""
+				} ${props.className}`}
+		>
+			{props.children}
+		</div>
+	);
 }

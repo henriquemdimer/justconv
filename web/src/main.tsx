@@ -1,6 +1,6 @@
 /* @refresh reload */
 import './index.scss'
-import { render } from 'solid-js/web'
 import App from './App.tsx'
+import { createRoot } from 'react-dom/client'
 
-render(() => <App />, document.getElementById('root')!)
+createRoot(document.getElementById('root')!).render(<App />)

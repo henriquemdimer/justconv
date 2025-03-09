@@ -1,14 +1,14 @@
-import { JSX } from "solid-js/jsx-runtime";
+import { ReactNode } from "react";
 import "./index.scss"
 
 export interface ContainerProps {
-	children: JSX.Element;
-	class?: string;
+	children: ReactNode;
+	className?: string;
 }
 
 export default function Container(props: ContainerProps) {
 	return (
-		<div class={`container ${props.class}`}>
+		<div className={`container ${props.className}`}>
 			{props.children}
 		</div>
 	)

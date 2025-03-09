@@ -1,5 +1,4 @@
 import "./index.scss";
-import { AiOutlineCloudUpload } from "solid-icons/ai";
 
 export default function DragNDrop() {
   return (
@@ -7,7 +6,6 @@ export default function DragNDrop() {
       <input id="fileUpload" type="file" />
       <div>
         <i>
-          <AiOutlineCloudUpload />
         </i>
         Drop Files or Click Here
       </div>

@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite'
-import solid from 'vite-plugin-solid'
-import path from 'node:path';
+import react from '@vitejs/plugin-react-swc'
+import path from 'path';
 
+// https://vite.dev/config/
 export default defineConfig({
-  plugins: [solid()],
+  plugins: [react()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    }
-  },
+	  alias: {
+		  '@': path.resolve(__dirname, './src')
+	  }
+  }
 })
