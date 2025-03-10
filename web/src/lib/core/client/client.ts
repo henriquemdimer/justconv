@@ -20,7 +20,7 @@ export class Client {
 		this.updater.init();
 
 		this.updater.on('conversionUpdate', (conv) => {
-			const status = conv.status == "DONE" ? ConversionStatus.DONE : ConversionStatus.PENDING;
+			const status = conv.status == "DONE" ? ConversionStatus.DONE : conv.status === "RUNNING" ? ConversionStatus.RUNNING : ConversionStatus.PENDING;
 			this.state.dispatch(this.state.reducers.queue.updateStatus(conv.id, status));
 		})
 	}
@@ -51,8 +51,8 @@ export class Client {
 			if (!file.format?.to) continue;
 
 			this.api.createConversion(file.name, file.format?.to, file.blob).then((id) => {
-				this.updater.subscribe(id);
 				this.state.dispatch(this.state.reducers.queue.syncId(file.id, id));
+				this.updater.subscribe(id);
 			});
 		}
 	}

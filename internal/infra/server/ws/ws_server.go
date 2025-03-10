@@ -6,21 +6,27 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	"github.com/henriquemdimer/justconv/internal/application/query"
+	"github.com/henriquemdimer/justconv/internal/domain"
+	"github.com/henriquemdimer/justconv/internal/domain/conversion"
+	"github.com/henriquemdimer/justconv/internal/infra/bus"
 )
 
 type WebsocketServer struct {
-	upgrader websocket.Upgrader
-	clients  map[string]*Client
+	upgrader  websocket.Upgrader
+	clients   map[string]*Client
+	query_bus domain.QueryBus
 }
 
-func NewWebsocketServer() *WebsocketServer {
+func NewWebsocketServer(query_bus domain.QueryBus) *WebsocketServer {
 	return &WebsocketServer{
 		upgrader: websocket.Upgrader{
-			CheckOrigin: func (_ *http.Request) bool {
+			CheckOrigin: func(_ *http.Request) bool {
 				return true
 			},
 		},
-		clients:  make(map[string]*Client),
+		clients:   make(map[string]*Client),
+		query_bus: query_bus,
 	}
 }
 
@@ -74,8 +80,21 @@ func (self *WebsocketServer) handleMessage(msg Message, conn *websocket.Conn) bo
 			return false
 		}
 
-		log.Println("client subscribed to:", data.Id)
 		client.Subscribe(data.Id)
+		conv, err := bus.QueryAsk[conversion.Conversion](
+			self.query_bus,
+			query.GetConversion{Id: data.Id},
+		)
+		if conv != nil && err == nil {
+			self.SendToSubscribed(Message{
+				Op: 0,
+				Data: domain.ConversionUpdateNotification{
+					Id: conv.GetId(),
+					Status: conv.GetStatus(),
+				},
+			}, conv.GetId())
+		}
+
 		return true
 	}
 

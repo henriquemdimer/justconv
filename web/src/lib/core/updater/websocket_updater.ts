@@ -50,7 +50,7 @@ export class WebsocketUpdater extends DefaultEventEmitter implements Updater {
 
 		switch(payload.op) {
 			case 0:
-				this.emit('conversionUpdate', { id: payload.data.Id, status: payload.data.Status });
+				this.emit('conversionUpdate', { id: payload.data.id, status: payload.data.status });
 		}
 	}
 }

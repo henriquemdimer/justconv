@@ -7,9 +7,9 @@ import (
 
 func (self *EventHandler) ConversionUpdatedHandler(event domain.Event) {
 	if ev, ok := event.(conversion.ConversionUpdated); ok {
-		self.notifier.NotifyConversionUpdate(ev.Id, map[string]string{
-			"Status": ev.Status,
-			"Id": ev.Id,
+		self.notifier.NotifyConversionUpdate(ev.Id, domain.ConversionUpdateNotification{
+			Id: ev.Id,
+			Status: ev.Status,
 		})
 	}
 }

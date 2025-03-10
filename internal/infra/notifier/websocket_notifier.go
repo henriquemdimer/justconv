@@ -15,7 +15,7 @@ func NewWebsocketNotifier(ws *ws.WebsocketServer) domain.Notifier {
 	}
 }
 
-func (self *WebsocketNotifier) NotifyConversionUpdate(conv_id string, data map[string]string) {
+func (self *WebsocketNotifier) NotifyConversionUpdate(conv_id string, data domain.ConversionUpdateNotification) {
 	self.ws.SendToSubscribed(ws.Message{
 		Op: ws.ConversionUpdatedOP,
 		Data: data,

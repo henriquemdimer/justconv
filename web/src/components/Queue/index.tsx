@@ -18,9 +18,12 @@ export function Container(props: QueueProps) {
 export interface QueueItemProps {
   label: string;
   format_from: string;
-  format_to: string
+  format_to: string;
   size: string;
-  status: string;
+  status: {
+	  label: string;
+	  done: boolean;
+  };
 }
 
 export function Item(props: QueueItemProps) {
@@ -29,8 +32,12 @@ export function Item(props: QueueItemProps) {
       <div className="queue__item__infos">
         <span className="queue__item__infos__name">{props.label}</span>
         <div className="queue__item__infos__status">
-          <div className="queue__item__infos__status__dot" />
-          <span>{props.status}</span>
+          <div 
+		  className={`
+			  queue__item__infos__status__dot 
+			  ${props.status.done ? "queue__item__infos__status__dot--done" : ""}
+			`} />
+          <span>{props.status.label}</span>
         </div>
         <span>{props.format_from} -&gt; {props.format_to}</span>
         <span className="queue__item__infos__size">{props.size}</span>

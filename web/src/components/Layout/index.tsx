@@ -9,7 +9,7 @@ import { FaLink, FaFileCirclePlus, FaArrowRight } from "react-icons/fa6";
 import { useLibState } from "../../lib/core/state/state_manager.tsx";
 import { client } from "../../lib/index.ts";
 import * as Queue from '../Queue/index.tsx';
-import { Conversion } from "../../lib/core/types/conversion.ts";
+import { Conversion, ConversionStatus } from "../../lib/core/types/conversion.ts";
 
 export default function Layout() {
 	const queue = useLibState(client.state.reducers.queue);
@@ -64,7 +64,10 @@ export default function Layout() {
 														format_from={item.format?.from || "IDK"}
 														format_to={item.format?.to || "IDK"}
 														size="10 MB"
-														status={item.status} />
+														status={{
+															label: item.status,
+															done: item.status == ConversionStatus.DONE
+														}} />
 												))}
 										</Queue.Container>
 									</>

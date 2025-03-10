@@ -34,7 +34,7 @@ func main() {
 
 	ListenToConversorEvents(*conversor, commandBus)
 	sv := server.NewHTTPServer(commandBus, queryBus, nil)
-	ws_server := ws.NewWebsocketServer()
+	ws_server := ws.NewWebsocketServer(queryBus)
 
 	_notifier := notifier.NewWebsocketNotifier(ws_server)
 	eventHandler := handlers.NewEventHandler(_notifier)
