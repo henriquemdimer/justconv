@@ -1,29 +1,20 @@
 @use '@/utils/css/animations' as mixins;
 
 #drag-n-drop {
-  @include mixins.shrink(.95, "> div", true);
+  @include mixins.shrink(.95, "> div");
   width: 100%;
-  height: 100%;
+  height: 50%;
   position: relative;
   border-radius: var(--border-radius);
   border: 3px dashed var(--detail);
   font-size: 20px;
   cursor: pointer;
   background-color: rgba(30, 144, 255, 0.1);
-
-  &>input {
-    width: 100%;
-    height: 100%;
-    outline: none;
-    opacity: 0;
-    cursor: pointer;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &>div {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
     gap: 10px;

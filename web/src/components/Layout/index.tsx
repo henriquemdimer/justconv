@@ -5,9 +5,15 @@ import Sidebar from "../Sidebar/index.tsx";
 import "./index.scss";
 import DragNDrop from "../DragNDrop/index.tsx";
 import NotImplAlert from "../NotImplAlert/index.tsx";
-import { FaLink } from "react-icons/fa6";
+import { FaLink, FaFileCirclePlus, FaArrowRight } from "react-icons/fa6";
+import { useLibState } from "../../lib/core/state/state_manager.tsx";
+import { client } from "../../lib/index.ts";
+import * as Queue from '../Queue/index.tsx';
+import { Conversion } from "../../lib/core/types/conversion.ts";
 
 export default function Layout() {
+	const queue = useLibState(client.state.reducers.queue);
+
 	return (
 		<Container className="full-height">
 			<div id="layout">
@@ -32,9 +38,39 @@ export default function Layout() {
 					</div>
 					<Panel dynamic>
 						<div className="flex full-height flex-column gap">
-							<div className="row flex flex-column gap">
-								<small className="small-text">Conversion queue</small>
-								<DragNDrop />
+							<div className="flex full-height flex-column gap">
+								{queue.files.size ? (
+									<>
+										<div id="convert-actions">
+											<Button
+												onClick={async () => client.uploadFiles(await client.ui.askForFiles())}
+												style="outline"
+												leftIcon={<FaFileCirclePlus />}
+												label="Add more files"
+											/>
+											<Button 
+												onClick={() => client.convert()}
+												rightIcon={<FaArrowRight />}
+												label="Convert"
+											/>
+										</div>
+										<small className="small-text">Conversion queue</small>
+										<Queue.Container>
+											{Array.from(queue.files.values())
+												.map((item: Conversion) => (
+													<Queue.Item
+														key={item.id}
+														label={item.name}
+														format_from={item.format?.from || "IDK"}
+														format_to={item.format?.to || "IDK"}
+														size="10 MB"
+														status={item.status} />
+												))}
+										</Queue.Container>
+									</>
+								) : (
+									<DragNDrop />
+								)}
 							</div>
 						</div>
 					</Panel>

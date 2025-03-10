@@ -3,11 +3,7 @@
 .button {
   @include mixins.shrink;
 
-  border: none;
-  background-color: var(--detail);
   outline: none;
-  border-radius: var(--border-radius-small);
-  color: white;
   font-weight: bolder;
   padding: 7px 15px;
   cursor: pointer;
@@ -17,4 +13,23 @@
   justify-content: center;
   transition: var(--transition-fast);
   font-size: 14px;
+
+  &--default {
+    border: 2px solid var(--detail);
+    background-color: var(--detail);
+    border-radius: var(--border-radius-small);
+    color: white;
+  }
+
+  &--outline {
+    border: 2px solid var(--detail);
+    border-radius: var(--border-radius-small);
+    background-color: transparent;
+    color: var(--detail);
+
+    &:hover {
+      color: white;
+      background-color: var(--detail);
+    }
+  }
 }
