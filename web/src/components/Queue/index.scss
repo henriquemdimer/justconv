@@ -58,6 +58,10 @@
           &--done {
             background-color: green;
           }
+
+          &--waiting {
+            background-color: gray;
+          }
         }
       }
     }

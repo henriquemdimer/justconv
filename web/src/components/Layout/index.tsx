@@ -43,7 +43,9 @@ export default function Layout() {
 									<>
 										<div id="convert-actions">
 											<Button
-												onClick={async () => client.uploadFiles(await client.ui.askForFiles())}
+												onClick={async () => 
+													client.uploadFiles(await client.ui.askForFiles())
+												}
 												style="outline"
 												leftIcon={<FaFileCirclePlus />}
 												label="Add more files"
@@ -66,7 +68,7 @@ export default function Layout() {
 														size="10 MB"
 														status={{
 															label: item.status,
-															done: item.status == ConversionStatus.DONE
+															type: item.status.toLowerCase()
 														}} />
 												))}
 										</Queue.Container>

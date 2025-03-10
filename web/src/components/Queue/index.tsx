@@ -22,7 +22,7 @@ export interface QueueItemProps {
   size: string;
   status: {
 	  label: string;
-	  done: boolean;
+	  type: string;
   };
 }
 
@@ -35,7 +35,7 @@ export function Item(props: QueueItemProps) {
           <div 
 		  className={`
 			  queue__item__infos__status__dot 
-			  ${props.status.done ? "queue__item__infos__status__dot--done" : ""}
+			  queue__item__infos__status__dot--${props.status.type}
 			`} />
           <span>{props.status.label}</span>
         </div>

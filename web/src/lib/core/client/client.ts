@@ -34,7 +34,7 @@ export class Client {
 			const conv = {
 				id: crypto.randomUUID(),
 				name: file.name,
-				status: ConversionStatus.PENDING,
+				status: ConversionStatus.WAITING,
 				format: {
 					to: 'png',
 					from: 'jpg'

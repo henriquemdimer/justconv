@@ -1,4 +1,5 @@
 export enum ConversionStatus {
+	WAITING = "Waiting",
 	UPLOADING = "Uploading",
 	DOWNLOADING = "Downloading",
 	PENDING = "Pending",
