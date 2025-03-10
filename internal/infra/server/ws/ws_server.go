@@ -15,7 +15,11 @@ type WebsocketServer struct {
 
 func NewWebsocketServer() *WebsocketServer {
 	return &WebsocketServer{
-		upgrader: websocket.Upgrader{},
+		upgrader: websocket.Upgrader{
+			CheckOrigin: func (_ *http.Request) bool {
+				return true
+			},
+		},
 		clients:  make(map[string]*Client),
 	}
 }
@@ -70,6 +74,7 @@ func (self *WebsocketServer) handleMessage(msg Message, conn *websocket.Conn) bo
 			return false
 		}
 
+		log.Println("client subscribed to:", data.Id)
 		client.Subscribe(data.Id)
 		return true
 	}

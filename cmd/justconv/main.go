@@ -12,9 +12,9 @@ import (
 	"github.com/henriquemdimer/justconv/internal/infra/bus"
 	"github.com/henriquemdimer/justconv/internal/infra/notifier"
 	"github.com/henriquemdimer/justconv/internal/infra/persistence/cache/inmemory"
-	"github.com/henriquemdimer/justconv/pkg/justconv"
 	"github.com/henriquemdimer/justconv/internal/infra/server"
 	"github.com/henriquemdimer/justconv/internal/infra/server/ws"
+	"github.com/henriquemdimer/justconv/pkg/justconv"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	queryBus.RegisterHandler("GetConversion", queryHandler.GetConversion)
 
 	ListenToConversorEvents(*conversor, commandBus)
-	sv := server.NewHTTPServer(commandBus, queryBus, nil)	
+	sv := server.NewHTTPServer(commandBus, queryBus, nil)
 	ws_server := ws.NewWebsocketServer()
 
 	_notifier := notifier.NewWebsocketNotifier(ws_server)
@@ -41,6 +41,7 @@ func main() {
 	eventBus.RegisterHandler("ConversionUpdated", eventHandler.ConversionUpdatedHandler)
 
 	handler := sv.LoadHandlers()
+
 	handler.Get("/ws", ws_server.Upgrade)
 
 	go conversor.Init()
@@ -60,7 +61,7 @@ func ListenToConversorEvents(conversor justconv.JustConv, commandBus domain.Comm
 	conversor.GetEventBus().RegisterHandler(justconv.TaskStatusUpdateEvent,
 		func(task *justconv.Task[string]) {
 			output := ""
-			
+
 			if task.Result != nil {
 				output = task.Result.Result
 			}
