@@ -39,4 +39,14 @@ export class QueueState extends State<IQueueState> {
 
 		return this;
 	}
+
+	public setFormat(id: string, format: string) {
+		const file = this.files.get(id);
+		if(file) {
+			file.format.to = format;
+			this.files.set(id, file);
+		}
+
+		return this;
+	}
 }

@@ -9,13 +9,13 @@ export enum ConversionStatus {
 
 export interface ConversionFormat {
 	from: string;
-	to: string;
+	to?: string;
 }
 
 export interface Conversion {
 	id: string;
 	name: string;
 	blob: Blob;
-	format?: ConversionFormat;
+	format: ConversionFormat;
 	status: ConversionStatus;
 }

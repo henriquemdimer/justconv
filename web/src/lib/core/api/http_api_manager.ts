@@ -1,4 +1,5 @@
 import { ApiManager } from "../contracts/api_manager";
+import { Format, FormatGroup } from "../types/formats";
 
 export interface HttpApiManagerOptions {
 	url: string;
@@ -35,5 +36,31 @@ export class HttpApiManager implements ApiManager {
 
 		const body = await res.json();
 	    return body.data.id;
+	}
+
+	public async getSupportedFormats(): Promise<FormatGroup[]> {
+	    const res = await fetch(`${this.options.url}`);
+		const body = await res.json();
+
+		const groups = [];
+		for (const [group_key, group_value] of Object.entries(body.data.formats)) {
+			const group: FormatGroup = {
+				type: group_key,
+				formats: []
+			}
+
+			for (const [main_format, subformats] of Object.entries(group_value as any)) {
+				const format: Format = {
+					input: main_format,
+					convertible: subformats as string[],
+				}
+
+				group.formats.push(format);
+			}
+
+			groups.push(group);
+		}
+
+		return groups;
 	}
 }
