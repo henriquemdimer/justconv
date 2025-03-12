@@ -4,22 +4,25 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/henriquemdimer/justconv/pkg/justconv"
 	"github.com/u2takey/ffmpeg-go"
 )
 
-type FFmpegDriver struct {}
+type FFmpegDriver struct{}
 
 func NewFFmpegDriver() *FFmpegDriver {
 	return &FFmpegDriver{}
 }
 
-func (self *FFmpegDriver) GetSupportedFormats() map[string][]string {
-	return map[string][]string {
-		"png": {"jpg", "webp", "avif", "bmp"},
-		"jpg": {"png", "webp", "avif", "bmp"},
-		"webp": {"png", "jpg", "avif", "bmp"},
-		"avif": {"png", "jpg", "webp", "bmp"},
-		"bmp": {"png", "jpg", "webp", "avif"},
+func (self *FFmpegDriver) GetSupportedFormats() justconv.Formats {
+	return map[string]map[string][]string{
+		"image": {
+			"png":  {"jpg", "webp", "avif", "bmp"},
+			"jpg":  {"png", "webp", "avif", "bmp"},
+			"webp": {"png", "jpg", "avif", "bmp"},
+			"avif": {"png", "jpg", "webp", "bmp"},
+			"bmp":  {"png", "jpg", "webp", "avif"},
+		},
 	}
 }
 

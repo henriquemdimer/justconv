@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/henriquemdimer/justconv/pkg/justconv/drivers"
 	"slices"
 )
 
@@ -15,10 +14,10 @@ type JustConv struct {
 	events  *EventBus
 }
 
-func New() *JustConv {
+func New(drivers []ConvDriver) *JustConv {
 	eventBus := NewEventBus()
 	return &JustConv{
-		drivers: []ConvDriver{drivers.NewFFmpegDriver()},
+		drivers: drivers,
 		queue:   NewDefaultQueue[string](eventBus, nil),
 		events:  eventBus,
 	}
@@ -27,14 +26,34 @@ func New() *JustConv {
 func (self *JustConv) GetDriver(input_format string, output_format string) ConvDriver {
 	for _, driver := range self.drivers {
 		supported_formats := driver.GetSupportedFormats()
-		group := supported_formats[input_format]
-
-		if slices.Contains(group, output_format) {
-			return driver
+		for _, group := range supported_formats {
+			formats := group[input_format]
+			if slices.Contains(formats, output_format) {
+				return driver
+			}
 		}
 	}
 
 	return nil
+}
+
+func (self *JustConv) GetFormatsTable() Formats {
+	table := make(Formats)
+
+	for _, driver := range self.drivers {
+		supported_formats := driver.GetSupportedFormats()
+		for label, group := range supported_formats {
+			if table[label] == nil {
+				table[label] = group
+			} else {
+				for key, formats := range group {
+					table[label][key] = formats
+				}
+			}
+		}
+	}
+
+	return table
 }
 
 func (self *JustConv) Convert(input string, format string) (TaskID, error) {
@@ -42,7 +61,7 @@ func (self *JustConv) Convert(input string, format string) (TaskID, error) {
 
 	driver := self.GetDriver(input_ext, format)
 	if driver == nil {
-		return TaskID(""), errors.New("Failed to find driver for specific format: " + format)
+		return "", errors.New("Failed to find driver for specific format: " + format)
 	}
 
 	return self.queue.Enqueue(NewTask(func() (string, error) {

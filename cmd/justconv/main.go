@@ -15,6 +15,7 @@ import (
 	"github.com/henriquemdimer/justconv/internal/infra/server"
 	"github.com/henriquemdimer/justconv/internal/infra/server/ws"
 	"github.com/henriquemdimer/justconv/pkg/justconv"
+	"github.com/henriquemdimer/justconv/pkg/justconv/drivers"
 )
 
 func main() {
@@ -23,14 +24,15 @@ func main() {
 	queryBus := bus.NewDefaultQueryBus()
 
 	conv_cache := inmemory.NewInMemoryConversionListCache(eventBus)
-	conversor := justconv.New()
+	conversor := justconv.New([]justconv.ConvDriver{drivers.NewFFmpegDriver()})
 
 	commandHandler := handlers.NewCommandHandler(eventBus, conv_cache, conversor)
 	commandBus.RegisterHandler("CreateUpload", commandHandler.CreateUploadHandler)
 	commandBus.RegisterHandler("UpdateConversion", commandHandler.UpdateConversionHandler)
 
-	queryHandler := handlers.NewQueryHandler(conv_cache)
+	queryHandler := handlers.NewQueryHandler(conv_cache, conversor)
 	queryBus.RegisterHandler("GetConversion", queryHandler.GetConversion)
+	queryBus.RegisterHandler("GetSupportedFormats", queryHandler.GetSupportedFormats)
 
 	ListenToConversorEvents(*conversor, commandBus)
 	sv := server.NewHTTPServer(commandBus, queryBus, nil)

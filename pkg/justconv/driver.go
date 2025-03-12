@@ -1,7 +1,9 @@
 package justconv
 
+type Formats map[string]map[string][]string
+
 type ConvDriver interface {
-	GetSupportedFormats() map[string][]string
+	GetSupportedFormats() Formats
 	GetName() string
 	Convert(input string, format string) (string, error)
 }

@@ -63,7 +63,7 @@ func (self *Controller) Convert(w http.ResponseWriter, r *http.Request) {
 	self.writer.WriteJson(w, 201, domain.RequestResponse{
 		Message: "Conversion enqueued",
 		Code:    201,
-		Data: map[string]string{
+		Data: map[string]any{
 			"id": id,
 		},
 	})
@@ -86,7 +86,7 @@ func (self *Controller) CheckStatus(w http.ResponseWriter, r *http.Request) {
 
 	self.writer.WriteJson(w, 200, domain.RequestResponse{
 		Code: 200,
-		Data: map[string]string{
+		Data: map[string]any{
 			"id": conv.GetId(),
 			"status": conv.GetStatus(),
 			"format": conv.GetFormat(),
