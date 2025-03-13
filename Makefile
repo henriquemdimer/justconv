@@ -1,21 +1,25 @@
-SRC=$(wildcard cmd/*/main.go)
 BIN_DIR=bin
+SRC=cmd/justconv/main.go
+TARGET=$(BIN_DIR)/justconv
+
 LDFLAGS="-s -w"
 GCFLAGS="-l -c 4"
+CMDFLAGS=-v -trimpath
 
-all: deps build
-	
+.PHONY: deps clean run dev
+
+all: deps $(TARGET)
+
+$(TARGET): $(BIN_DIR)
+	go build -o $(TARGET) -gcflags=$(GCFLAGS) -ldflags=$(LDFLAGS) $(CMDFLAGS) $(SRC)
+
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
+
 deps:
 	go mod tidy
 
-build:
-	$(foreach file, $(SRC), \
-		output=$(BIN_DIR)/$(subst /,_,$(basename $(file))); \
-		echo "[ + ] Compiling $(file) -> $$output"; \
-		go build -gcflags=$(GCFLAGS) -trimpath -ldflags $(LDFLAGS) -v -o $$output $(FLAGS) ./$(file);)
+run:
+	@./$(TARGET)
 
-watch:
-	air
-
-clean:
-	rm -rf $(BIN_DIR)
+dev: $(TARGET) run
