@@ -1,0 +1,1 @@
+export type CommonSizes = "sm" | "lg" | "xl";

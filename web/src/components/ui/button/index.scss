@@ -23,6 +23,10 @@
   }
 
   &-radius {
+    &--none {
+      border-radius: var(--button-border-radius-none);
+    }
+
     &--sm {
       border-radius: var(--button-border-radius-sm);
     }

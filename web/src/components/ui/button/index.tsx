@@ -1,9 +1,10 @@
 import { ReactNode, useEffect, useState } from "react";
 import "./index.scss";
 import { Reuleaux } from 'ldrs/react'
+import { CommonSizes } from "@/utils/sizes";
 
 export type ButtonVariants = "default" | "outline" | "flat";
-export type ButtonRadius = "sm" | "lg" | "xl" | "full"
+export type ButtonRadius = CommonSizes | "none" | "full";
 export type ButtonColors = "default" | "primary" | "danger";
 
 export interface ButtonProps {
@@ -34,7 +35,7 @@ export default function Button(props: ButtonProps) {
       if (props.color === "default") setLoaderColor("var(--button-text-dark)");
       else setLoaderColor("var(--button-text-light)");
     }
-  }, [isHovered, props]);
+  }, [isHovered, props.color, props.variant]);
 
   return (
     <button
