@@ -12,6 +12,7 @@
   display: flex;
   align-items: center;
   gap: var(--button-flex-gap);
+  white-space: nowrap;
 
   &:not(.button--disabled) {
     @include mixins.shrink(.97);

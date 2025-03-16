@@ -1,0 +1,21 @@
+@use "@utils/css/animations" as mixins;
+
+.input {
+    @include mixins.shrink(.97);
+
+    background-color: rgb(235, 235, 235);
+    display: flex;
+    padding: 10px;
+    border-radius: 12px;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition-fast);
+
+    & > input {
+        border: none;
+        outline: none;
+        height: 100%;
+        width: 100%;
+        background-color: transparent;
+    }
+}

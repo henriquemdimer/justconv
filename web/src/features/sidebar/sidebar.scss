@@ -1,0 +1,56 @@
+@use "@utils/css/animations" as mixins;
+
+#sidebar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: var(--layout-panel-padding);
+    gap: var(--sidebar-flex-gap);
+
+    &__brand h3 {
+        display: inline-block;
+        position: relative;
+        margin-left: 12px;
+
+        &::after {
+            content: ".";
+            position: absolute;
+            bottom: -6px;
+            right: -13px;
+            font-size: 45px;
+            color: var(--primary);
+        }
+    }
+
+    &__menu {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        gap: var(--sidebar-menu-flex-gap);
+
+        & > li {
+            @include mixins.shrink(.95);
+
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: bold;
+            padding: var(--sidebar-menu-item-padding);
+            font-size: var(--sidebar-menu-item-font-size);
+            color: var(--sidebar-menu-item-text-color);
+            border-radius: var(--sidebar-menu-item-radius);
+            gap: var(--sidebar-menu-item-icon-gap);
+            transition: var(--transition-fast);
+
+            & > i {
+                font-size: var(--sidebar-menu-item-icon-font-size);
+            }
+
+            &:hover {
+                background-color: var(--sidebar-menu-item-hover-color);
+                color: var(--sidebar-menu-item-text-color-hover);
+            }
+        }
+    }
+}
