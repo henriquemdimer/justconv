@@ -4,9 +4,7 @@
   outline: none;
   border: none;
   padding: var(--button-padding);
-  height: 35px;
   border: 2px solid;
-  font-size: var(--button-font-size);
   font-weight: bold;
   cursor: pointer;
   transition: var(--transition-fast);
@@ -22,6 +20,19 @@
   &--disabled {
     cursor: not-allowed;
     opacity: .65;
+  }
+
+  &-size {
+    &--default {
+      height: 35px;
+      font-size: var(--button-font-size-default);
+    }
+
+    &--sm {
+      height: 28px;
+      font-size: var(--button-font-size-sm);
+      font-weight: 600;
+    }
   }
 
   &-radius {
@@ -101,7 +112,7 @@
       &.button-color--default {
         color: var(--button-text-dark);
 
-        &:not(.button--disabled)::hover {
+        &:not(.button--disabled):hover {
           background-color: var(--button-default);
           color: var(--button-text-dark);
         }

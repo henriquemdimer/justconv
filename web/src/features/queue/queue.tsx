@@ -1,5 +1,5 @@
-import Tag from "@/components/ui/tag";
 import "./queue.scss";
+import Conversion from "./components/conversion";
 
 export default function Queue() {
     return (
@@ -19,27 +19,14 @@ export default function Queue() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>convert-this.jpg</td>
-                            <td><Tag color="success">Pending</Tag></td>
-                            <td>JPG -&gt; PNG</td>
-                            <td>10 KB</td>
-                        </tr>
-                        <tr>
-                            <td>convert-this.jpg</td>
-                            <td><Tag>Pending</Tag></td>
-                            <td>JPG -&gt; PNG</td>
-                            <td>10 KB</td>
-                        </tr>
-                        <tr>
-                            <td>convert-this.jpg</td>
-                            <td><Tag>Pending</Tag></td>
-                            <td>JPG -&gt; PNG</td>
-                            <td>10 KB</td>
-                        </tr>
+                        {new Array(20).fill('a').map(() => (
+                            <tr>
+                                <Conversion />
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div >
     )
 }
