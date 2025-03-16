@@ -4,7 +4,8 @@ import Sidebar from "@/features/sidebar/sidebar";
 import Input from "@/components/ui/input";
 import { CiSearch } from "react-icons/ci";
 import Button from "@/components/ui/button";
-import { FaPlus } from "react-icons/fa6";
+import { FaAngleRight, FaPlus } from "react-icons/fa6";
+import Queue from "@/features/queue/queue";
 
 export default function HomePage() {
 	return (
@@ -21,8 +22,12 @@ export default function HomePage() {
 						<div id="layout__convert">
 							<div id="layout__convert__header">
 								<Input startContent={<CiSearch />} />
-								<Button color="primary" endContent={<FaPlus />}>Add Files</Button>
+								<div id="layout__convert__header__actions">
+									<Button variant="outline" color="primary" startContent={<FaPlus />} />
+									<Button color="primary" endContent={<FaAngleRight />}>Convert</Button>
+								</div>
 							</div>
+							<Queue />
 						</div>
 					</div>
 				</div>

@@ -4,13 +4,26 @@
     padding: var(--layout-padding);
     display: flex;
     gap: var(--layout-gap);
+    overflow: hidden;
 
     &__convert {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+        width: 100%;
+
         &__header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
+
+            &__actions {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
         }
     }
 
@@ -40,8 +53,8 @@
 
         &--transparent {
             background-color: transparent;
-            border: 1px solid rgba(211, 211, 211, 0.5);
-            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+            border: 1px solid var(--layout-panel-border-color);
+            box-shadow: var(--layout-panel-box-shadow);
         }
 
         &--with-padding {

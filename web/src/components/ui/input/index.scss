@@ -3,13 +3,14 @@
 .input {
     @include mixins.shrink(.97);
 
-    background-color: rgb(235, 235, 235);
+    background-color: var(--input-bg-color);
     display: flex;
-    padding: 10px;
-    border-radius: 12px;
+    padding: var(--input-padding);
+    border-radius: var(--input-border-radius);
     align-items: center;
-    gap: 5px;
+    gap: var(--input-flex-gap);
     transition: var(--transition-fast);
+    cursor: text;
 
     & > input {
         border: none;

@@ -8,7 +8,7 @@ export type ButtonRadius = CommonSizes | "none" | "full";
 export type ButtonColors = "default" | "primary" | "danger";
 
 export interface ButtonProps {
-  children: ReactNode;
+  children?: ReactNode;
   variant?: ButtonVariants;
   radius?: ButtonRadius;
   color?: ButtonColors;
@@ -41,7 +41,7 @@ export default function Button(props: ButtonProps) {
     <button
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={props.onClick} type="button"
+      onClick={() => (!props.isDisabled && !props.isLoading) && props.onClick} type="button"
       className={`button 
         button-variant--${props.variant || "default"}
         button-radius--${props.radius || "sm"}
@@ -61,7 +61,6 @@ export default function Button(props: ButtonProps) {
           />
         </i>
       )}
-      {isHovered}
       {props.children}
       {props.endContent}
     </button >

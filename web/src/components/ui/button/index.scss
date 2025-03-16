@@ -4,6 +4,7 @@
   outline: none;
   border: none;
   padding: var(--button-padding);
+  height: 35px;
   border: 2px solid;
   font-size: var(--button-font-size);
   font-weight: bold;
@@ -20,7 +21,7 @@
 
   &--disabled {
     cursor: not-allowed;
-    opacity: .4;
+    opacity: .65;
   }
 
   &-radius {
@@ -91,7 +92,7 @@
       &.button-color--primary {
         color: var(--button-primary);
 
-        &:hover {
+        &:not(.button--disabled):hover {
           background-color: var(--button-primary);
           color: var(--button-text-light);
         }
@@ -100,7 +101,7 @@
       &.button-color--default {
         color: var(--button-text-dark);
 
-        &:hover {
+        &:not(.button--disabled)::hover {
           background-color: var(--button-default);
           color: var(--button-text-dark);
         }
@@ -109,7 +110,7 @@
       &.button-color--danger {
         color: var(--button-danger);
 
-        &:hover {
+        &:not(.button--disabled)::hover {
           background-color: var(--button-danger);
           color: var(--button-text-light);
         }

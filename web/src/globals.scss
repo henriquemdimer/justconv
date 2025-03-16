@@ -11,9 +11,24 @@ i {
   justify-content: center;
 }
 
+body, html {
+  overflow: hidden;
+  width: 100svw;
+  height: 100svh;
+}
+
 :root {
+  /*
+  * COLORS
+  */
   --primary: rgb(30, 144, 255);
   --primary-flat: rgba(48, 139, 230, 0.2);
+  --default: rgb(235, 235, 235);
+  --default-flat: rgba(211, 211, 211, 0.2);
+  --danger: red;
+  --danger-flat: rgba(255, 0, 0, 0.2);
+
+
   --transition: .2s;
   --transition-fast: .1s;
 
@@ -23,15 +38,15 @@ i {
   // Colors
   --button-primary: var(--primary);
   --button-primary-flat: var(--primary-flat);
-  --button-default: lightgray;
-  --button-default-flat: rgba(211, 211, 211, 0.2);
-  --button-danger: red;
-  --button-danger-flat: rgba(255, 0, 0, 0.2);
+  --button-default: var(--default);
+  --button-default-flat: var(--default-flat);
+  --button-danger: var(--danger);
+  --button-danger-flat: var(--danger-flat);
   --button-text-light: white;
   --button-text-dark: black;
 
   // Sizes
-  --button-padding: 8px 14px;
+  --button-padding: 0 14px;
   --button-font-size: 15px;
 
   // Radius
@@ -50,7 +65,9 @@ i {
   --layout-gap: 12px;
   --layout-panel-border-radius: 12px;
   --layout-panel-padding: 12px;
-  --layout-panel-background-color: #ece9e9;
+  --layout-panel-background-color: var(--default);
+  --layout-panel-border-color: rgba(211, 211, 211, 0.5);
+  --layout-panel-box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   /*
     CONTAINER VARIABLES
@@ -70,4 +87,37 @@ i {
   --sidebar-menu-item-radius: 8px;
   --sidebar-menu-item-icon-gap: 7px;
   --sidebar-menu-item-icon-font-size: 20px;
+
+  /*
+  * INPUT VARIABLES
+  */
+  --input-bg-color: rgb(235, 235, 235);
+  --input-padding: 10px;
+  --input-border-radius: 12px;
+  --input-flex-gap: 5px;
+
+  /*
+  * TAG VARIABLES
+  */
+  --tag-color-primary: var(--primary-flat);
+  --tag-color-primary-text: var(--primary);
+  --tag-color-default: var(--default-flat);
+  --tag-color-default-text: black;
+  --tag-color-danger: var(--danger-flat);
+  --tag-color-danger-text: var(--danger);
+  --tag-color-warn: rgba(255, 166, 0, 0.2);
+  --tag-color-warn-text: orange;
+  --tag-color-success: rgba(0, 128, 0, 0.2);
+  --tag-color-success-text: green;
+
+  /*
+  * QUEUE VARIABLES
+  */
+  --queue-td-padding: 8px;
+  --queue-th-height: 40px;
+  --queue-th-font-size: 13px;
+  --queue-th-color: gray;
+  --queue-flex-gap: 10px;
+  --queue-header-font-size: 13px;
+  --queue-header-color: gray;
 }

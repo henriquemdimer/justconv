@@ -1,0 +1,33 @@
+.tag {
+    padding: 5px 10px;
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 13px;
+
+    &-color {
+        &--primary {
+            background-color: var(--tag-color-primary);
+            color: var(--tag-color-primary-text);
+        }
+
+        &--default {
+            background-color: var(--tag-color-default);
+            color: var(--tag-color-default-text);
+        }
+
+        &--danger {
+            background-color: var(--tag-color-danger);
+            color: var(--tag-color-danger-text);
+        }
+
+        &--warn {
+            background-color: var(--tag-color-warn);
+            color: var(--tag-color-warn-text);
+        }
+
+        &--success {
+            background-color: var(--tag-color-success);
+            color: var(--tag-color-success-text);
+        }
+    }
+}
