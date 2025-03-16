@@ -1,6 +1,7 @@
-import "./App.scss";
-import Layout from "./components/Layout/index.tsx";
+import HomePage from "./pages/home";
 
 export default function App() {
-	return <Layout />;
+	return (
+		<HomePage />
+	)
 }

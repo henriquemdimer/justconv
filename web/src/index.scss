@@ -5,36 +5,34 @@
   font-family: 'Inter', sans-serif;
 }
 
-body,
-html {
-  background-color: var(--secondary);
-  height: 100svh;
-}
-
-.full-height,
-#root {
-  height: 100%;
-}
-
-.full-width {
-  width: 100%;
-}
-
-i {
-  display: flex;
-  align-items: center;
-}
-
 :root {
-  --primary: rgb(235, 235, 235);
-  --secondary: white;
-  --detail: dodgerblue;
-
-  --border-padding: 20px;
-  --border-radius: 10px;
-  --border-radius-small: 6px;
-  --gap: 20px;
-
+  --primary: rgb(30, 144, 255);
+  --primary-flat: rgba(48, 139, 230, 0.2);
   --transition: .2s;
   --transition-fast: .1s;
+
+  /*
+    BUTTON VARIABLES
+  */
+  // Colors
+  --button-primary: var(--primary);
+  --button-primary-flat: var(--primary-flat);
+  --button-default: lightgray;
+  --button-default-flat: rgba(211, 211, 211, 0.2);
+  --button-danger: red;
+  --button-danger-flat: rgba(255, 0, 0, 0.2);
+  --button-text-light: white;
+  --button-text-dark: black;
+
+  // Sizes
+  --button-padding: 8px 14px;
+  --button-font-size: 15px;
+
+  // Radius
+  --button-border-radius-sm: 6px;
+  --button-border-radius-lg: 12px;
+  --button-border-radius-xl: 15px;
+  --button-border-radius-full: 99px;
+
+  --button-flex-gap: 10px;
 }

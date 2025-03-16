@@ -1,35 +1,114 @@
-@use '@/utils/css/animations' as mixins;
+@use "@/utils/css/animations" as mixins;
 
 .button {
-  @include mixins.shrink;
-
   outline: none;
-  font-weight: bolder;
-  padding: 7px 15px;
+  border: none;
+  padding: var(--button-padding);
+  border: 2px solid;
+  font-size: var(--button-font-size);
+  font-weight: bold;
   cursor: pointer;
+  transition: var(--transition-fast);
   display: flex;
   align-items: center;
-  gap: 7px;
-  justify-content: center;
-  transition: var(--transition-fast);
-  font-size: 14px;
+  gap: var(--button-flex-gap);
 
-  &--default {
-    border: 2px solid var(--detail);
-    background-color: var(--detail);
-    border-radius: var(--border-radius-small);
-    color: white;
+  &:not(.button--disabled) {
+    @include mixins.shrink(.97);
   }
 
-  &--outline {
-    border: 2px solid var(--detail);
-    border-radius: var(--border-radius-small);
-    background-color: transparent;
-    color: var(--detail);
+  &--disabled {
+    cursor: not-allowed;
+    opacity: .4;
+  }
 
-    &:hover {
-      color: white;
-      background-color: var(--detail);
+  &-radius {
+    &--sm {
+      border-radius: var(--button-border-radius-sm);
+    }
+
+    &--lg {
+      border-radius: var(--button-border-radius-lg);
+    }
+
+    &--xl {
+      border-radius: var(--button-border-radius-xl);
+    }
+
+    &--full {
+      border-radius: var(--button-border-radius-full);
+    }
+  }
+
+  &-color {
+    &--default {
+      background-color: var(--button-default);
+      border-color: var(--button-default);
+      color: var(--button-text-dark);
+    }
+
+    &--primary {
+      background-color: var(--button-primary);
+      border-color: var(--button-primary);
+      color: var(--button-text-light)
+    }
+
+    &--danger {
+      background-color: var(--button-danger);
+      border-color: var(--button-danger);
+      color: var(--button-text-light);
+    }
+  }
+
+  &-variant {
+    &--flat {
+      border-color: transparent;
+
+      &.button-color--primary {
+        background-color: var(--button-primary-flat);
+        color: var(--button-primary);
+      }
+
+      &.button-color--danger {
+        background-color: var(--button-danger-flat);
+        color: var(--button-danger);
+      }
+
+      &.button-color--default {
+        background-color: var(--button-default-flat);
+        color: var(--button-text-dark);
+      }
+    }
+
+    &--outline {
+      background-color: transparent;
+
+      &.button-color--primary {
+        color: var(--button-primary);
+
+        &:hover {
+          background-color: var(--button-primary);
+          color: var(--button-text-light);
+        }
+      }
+
+      &.button-color--default {
+        color: var(--button-text-dark);
+
+        &:hover {
+          background-color: var(--button-default);
+          color: var(--button-text-dark);
+        }
+      }
+
+      &.button-color--danger {
+        color: var(--button-danger);
+
+        &:hover {
+          background-color: var(--button-danger);
+          color: var(--button-text-light);
+        }
+      }
     }
   }
 }
