@@ -46,7 +46,11 @@
             thead {
                 top: 0;
                 position: sticky;
-                z-index: 2;
+                z-index: 11;
+            }
+
+            td {
+                padding-left: calc(var(--queue-td-padding) + 2px);
             }
 
             th {

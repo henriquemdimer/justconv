@@ -1,0 +1,47 @@
+@use "@utils/css/animations" as mixins;
+
+.checkbox {
+    width: 19px;
+    height: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+
+    & > input {
+        position: absolute;
+        opacity: 0;
+
+        &:checked + .checkbox__checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+
+            &::after {
+                content: "+";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 20px;
+            }
+        }
+    }
+
+    &--indeterminate > input:checked + .checkbox__checkmark::after {
+        content: "-";
+    }
+
+    &__checkmark {
+        @include mixins.shrink;
+        width: 19px;
+        height: 19px;
+        border: 1px solid #555;
+        border-radius: 4px;
+        display: inline-block;
+        position: relative;
+        transition: var(--transition-fast);
+        font-weight: normal;
+    }
+}

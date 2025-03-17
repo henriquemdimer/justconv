@@ -3,7 +3,7 @@ import "./index.scss";
 import { Reuleaux } from 'ldrs/react'
 import { CommonSizes } from "@/utils/sizes";
 
-export type ButtonVariants = "default" | "outline" | "flat";
+export type ButtonVariants = "default" | "outline" | "flat" | "ghost";
 export type ButtonRadius = CommonSizes | "none" | "full";
 export type ButtonColors = "default" | "primary" | "danger";
 export type ButtonSizes = "default" | "sm";
@@ -20,6 +20,7 @@ export interface ButtonProps {
   isDisabled?: boolean;
   isLoading?: boolean;
   size?: ButtonSizes;
+  isIconOnly?: boolean;
 }
 
 export default function Button(props: ButtonProps) {
@@ -49,6 +50,7 @@ export default function Button(props: ButtonProps) {
         button-radius--${props.radius || "sm"}
         button-color--${props.color || "default"}
         button-size--${props.size || "default"}
+        ${props.isIconOnly ? "button--icon-only" : ""}
         ${props.isDisabled || props.isLoading ? "button--disabled" : ""}
         ${props.className}
       `}>

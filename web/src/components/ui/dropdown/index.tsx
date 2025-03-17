@@ -33,9 +33,29 @@ export function Dropdown(props: DropdownContainerProps) {
     )
 }
 
-export function DropdownMenu(props: DropdownBaseProps) {
+export interface DropdownMenuProps extends DropdownBaseProps {
+    side?: "top" | "bottom" | "left" | "right";
+}
+
+export function DropdownMenu(props: DropdownMenuProps) {
     return (
-        <div className="dropdown__menu">
+        <div className={`dropdown__menu
+            dropdown__menu--${props.side || "bottom"}
+         `}>
+            {props.children}
+        </div>
+    )
+}
+
+export interface DropdownMenuItemProps extends DropdownBaseProps {
+    color?: "default" | "danger"
+}
+
+export function DropdownMenuItem(props: DropdownMenuItemProps) {
+    return (
+        <div className={`dropdown__menu__item
+            dropdown__menu__item-color--${props.color || "default"}
+        `}>
             {props.children}
         </div>
     )

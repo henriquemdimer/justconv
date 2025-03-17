@@ -14,6 +14,10 @@
   gap: var(--button-flex-gap);
   white-space: nowrap;
 
+  &--icon-only {
+    padding: 10px;
+  }
+
   &:not(.button--disabled) {
     @include mixins.shrink(.97);
   }
@@ -96,6 +100,11 @@
         background-color: var(--button-default-flat);
         color: var(--button-text-dark);
       }
+    }
+
+    &--ghost {
+      background-color: transparent;
+      border: none;
     }
 
     &--outline {
