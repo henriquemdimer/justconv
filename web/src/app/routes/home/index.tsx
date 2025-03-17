@@ -21,7 +21,7 @@ export default function HomePage() {
 					<div className="layout__panel layout__panel--with-padding layout__panel--transparent">
 						<div id="layout__convert">
 							<div id="layout__convert__header">
-								<Input startContent={<CiSearch />} />
+								<Input placeholder="Search a file" startContent={<CiSearch />} />
 								<div id="layout__convert__header__actions">
 									<Button variant="outline" color="primary" startContent={<FaPlus />} />
 									<Button color="primary" endContent={<FaAngleRight />}>Convert</Button>

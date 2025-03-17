@@ -13,10 +13,10 @@ export default function Conversion() {
             <td>convert-this.jpg</td>
             <td><Tag color="default">Waiting</Tag></td>
             <td>
-                <Dropdown active={formatSelectionMenuActive}>
+                <Dropdown onClose={() => setFormatSelectionMenuActive(false)} active={formatSelectionMenuActive}>
                     <Button onClick={() => setFormatSelectionMenuActive(!formatSelectionMenuActive)} variant="outline" size="sm" endContent={<FaAngleDown />}>Format</Button>
                     <DropdownMenu>
-                        <FormatsTable />
+                        <FormatsTable isLoading />
                     </DropdownMenu>
                 </Dropdown>
             </td>

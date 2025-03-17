@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef } from "react";
 import "./index.scss";
 
 export interface InputProps {
@@ -8,19 +8,12 @@ export interface InputProps {
 }
 
 export default function Input(props: InputProps) {
-    const [id] = useState(crypto.randomUUID());
-
-    function irradiateClick() {
-        const input = document.getElementById(id);
-        if (input) {
-            input.focus();
-        }
-    }
+    const inputRef = useRef<HTMLInputElement>(null);
 
     return (
-        <div onClick={irradiateClick} className="input">
+        <div onClick={() => inputRef.current?.focus()} className="input">
             {props.startContent}
-            <input id={id} placeholder={props.placeholder} />
+            <input ref={inputRef} placeholder={props.placeholder} />
             {props.endContent}
         </div>
     )
