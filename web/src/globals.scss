@@ -121,4 +121,8 @@ body, html {
   --queue-flex-gap: 10px;
   --queue-header-font-size: 13px;
   --queue-header-color: gray;
+  --queue-scrollbar-width: 13px;  
+  --queue-scrollbar-radius: 10px;
+  --queue-scrollbar-track-color: var(--primary-flat);
+  --queue-scrollbar-thumb-color: var(--primary);
 }

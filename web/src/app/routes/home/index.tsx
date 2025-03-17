@@ -4,7 +4,7 @@ import Sidebar from "@/features/sidebar/sidebar";
 import Input from "@/components/ui/input";
 import { CiSearch } from "react-icons/ci";
 import Button from "@/components/ui/button";
-import { FaAngleRight, FaPlus } from "react-icons/fa6";
+import { FaAngleRight, FaPlus, FaGithub } from "react-icons/fa6";
 import Queue from "@/features/queue/queue";
 
 export default function HomePage() {
@@ -15,7 +15,11 @@ export default function HomePage() {
 					<div className="layout__panel">
 						<Sidebar />
 					</div>
-					<div className="layout__panel layout__panel--small">A</div>
+					<div id="layout__self-host" className="layout__panel layout__panel--small layout__panel--with-padding">
+						<h3>Self host</h3>
+						<p>Did you know you can self-host this service on your own servers? It's easy—check out our GitHub repository!</p>
+						<Button startContent={<FaGithub />} color="primary">Github</Button>
+					</div>
 				</div>
 				<div className="layout__middle-column">
 					<div className="layout__panel layout__panel--with-padding layout__panel--transparent">
