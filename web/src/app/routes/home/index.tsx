@@ -20,13 +20,13 @@ export default function HomePage() {
 
 	return (
 		<DefaultLayout>
-			<input onChange={() => onFileUpload()} ref={inputRef} type="file" id="fileUpload" />
+			<input multiple onChange={() => onFileUpload()} ref={inputRef} type="file" id="fileUpload" />
 			<div id="home__convert">
 				<div id="home__convert__header">
 					<Input placeholder="Search a file" startContent={<CiSearch />} />
 					<div id="home__convert__header__actions">
 						<Button onClick={() => inputRef.current?.click()} variant="outline" isIconOnly color="primary" startContent={<FaPlus />} />
-						<Button onClick={() => app.state.dispatch(app.state.reducers.queue.setName(Date.now().toString()))} color="primary" endContent={<FaAngleRight />}>Convert</Button>
+						<Button color="primary" endContent={<FaAngleRight />}>Convert</Button>
 					</div>
 				</div>
 				<Queue />

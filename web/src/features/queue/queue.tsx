@@ -1,8 +1,31 @@
 import "./queue.scss";
 import Conversion from "./components/conversion";
 import Checkbox from "@/components/ui/checkbox";
+import { useLibState } from "@/lib/core/state/manager";
+import { IQueueState } from "@/lib/core/app/app_state";
+import { app } from "@/lib";
+import { useState } from "react";
 
 export default function Queue() {
+    const convs = useLibState<IQueueState>(app.state.reducers.queue);
+    const [checked, setChecked] = useState<string[]>([]);
+
+    function updateSelectionList(id: string, state: boolean) {
+        if (state) {
+            setChecked([...checked, id]);
+        } else {
+            setChecked(checked.filter((i) => i !== id));
+        }
+    }
+
+    function checkAll() {
+        if (checked.length >= convs.queue.size) {
+            setChecked([]);
+        } else {
+            setChecked(Array.from(convs.queue.values().map((c) => c.id)));
+        }
+    }
+
     return (
         <div id="queue">
             <div id="queue__header">
@@ -13,7 +36,7 @@ export default function Queue() {
                 <table>
                     <thead>
                         <tr>
-                            <th><Checkbox isIndeterminate /></th>
+                            <th><Checkbox onChange={() => checkAll()} isChecked={convs.queue.size > 1 && convs.queue.size === checked.length ? true : null} isIndeterminate={checked.length > 0 && checked.length < convs.queue.size} /></th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Format</th>
@@ -22,9 +45,9 @@ export default function Queue() {
                         </tr>
                     </thead>
                     <tbody>
-                        {new Array(20).fill('a').map(() => (
+                        {convs.queue.values().map((conv) => (
                             <tr>
-                                <Conversion />
+                                <Conversion isChecked={checked.includes(conv.id) || false} onCheck={(state) => updateSelectionList(conv.id, state)} id={conv.id} name={conv.name} size={conv.size} status={conv.status} format={conv.format} />
                             </tr>
                         ))}
                     </tbody>

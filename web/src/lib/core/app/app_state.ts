@@ -1,20 +1,21 @@
+import { Conversion } from "../conversion";
 import { State } from "../state/state";
 
 export interface IQueueState {
-    name: string;
+    queue: Map<string, Conversion>;
 }
 
 export class QueueState extends State<IQueueState> {
-    private name = "";
+    private queue: Map<string, Conversion> = new Map();
 
     public get data() {
         return {
-            name: this.name
+            queue: this.queue
         }
     }
 
-    public setName(name: string) {
-        this.name = name;
+    public append(conv: Conversion) {
+        this.queue.set(conv.id, conv);
         return this;
     }
 }

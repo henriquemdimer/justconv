@@ -5,7 +5,7 @@ export interface CheckboxProps {
     children?: ReactNode;
     onChange?: (active: boolean) => void;
     isIndeterminate?: boolean;
-    isChecked?: boolean;
+    isChecked?: boolean | null;
 }
 
 export default function Checkbox(props: CheckboxProps) {
@@ -18,7 +18,7 @@ export default function Checkbox(props: CheckboxProps) {
 
     return (
         <div onClick={handleOnClick} className={`checkbox ${props.isIndeterminate ? "checkbox--indeterminate" : ""}`}>
-            <input checked={props.isChecked || props.isIndeterminate} ref={inputRef} type="checkbox" />
+            <input checked={props.isChecked === null ? props.isIndeterminate : props.isChecked} ref={inputRef} type="checkbox" />
             <span className="checkbox__checkmark"></span>
             {props.children}
         </div>
