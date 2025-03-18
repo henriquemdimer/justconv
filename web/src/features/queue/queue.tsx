@@ -36,7 +36,7 @@ export default function Queue() {
                 <table>
                     <thead>
                         <tr>
-                            <th><Checkbox onChange={() => checkAll()} isChecked={convs.queue.size > 1 && convs.queue.size === checked.length ? true : null} isIndeterminate={checked.length > 0 && checked.length < convs.queue.size} /></th>
+                            <th><Checkbox onChange={() => checkAll()} isChecked={convs.queue.size >= 1 && convs.queue.size === checked.length ? true : null} isIndeterminate={checked.length > 0 && checked.length < convs.queue.size} /></th>
                             <th>Name</th>
                             <th>Status</th>
                             <th>Format</th>
