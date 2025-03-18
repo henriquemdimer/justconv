@@ -27,7 +27,7 @@ export default function HomePage() {
 							<div id="layout__convert__header">
 								<Input placeholder="Search a file" startContent={<CiSearch />} />
 								<div id="layout__convert__header__actions">
-									<Button variant="outline" color="primary" startContent={<FaPlus />} />
+									<Button variant="outline" isIconOnly color="primary" startContent={<FaPlus />} />
 									<Button color="primary" endContent={<FaAngleRight />}>Convert</Button>
 								</div>
 							</div>

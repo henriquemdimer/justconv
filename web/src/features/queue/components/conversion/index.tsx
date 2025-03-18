@@ -3,7 +3,7 @@ import { Dropdown, DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdo
 import Tag from "@/components/ui/tag";
 import FormatsTable from "../formats-table";
 import { useState } from "react";
-import { FaAngleDown } from "react-icons/fa6";
+import { FaAngleDown, FaRegTrashCan, FaDownload } from "react-icons/fa6";
 import Checkbox from "@/components/ui/checkbox";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -29,8 +29,8 @@ export default function Conversion() {
                 <Dropdown active={actionsMenuActive} onClose={() => setActionsMenuActive(false)}>
                     <Button onClick={() => setActionsMenuActive(!actionsMenuActive)} variant="outline" isIconOnly size="sm" startContent={<BsThreeDotsVertical />} />
                     <DropdownMenu side="right">
-                        <DropdownMenuItem>Download</DropdownMenuItem>
-                        <DropdownMenuItem color="danger">Remove</DropdownMenuItem>
+                        <DropdownMenuItem startContent={<FaDownload />}>Download</DropdownMenuItem>
+                        <DropdownMenuItem color="danger" startContent={<FaRegTrashCan />}>Remove</DropdownMenuItem>
                     </DropdownMenu>
                 </Dropdown>
             </td>

@@ -49,6 +49,7 @@ export function DropdownMenu(props: DropdownMenuProps) {
 
 export interface DropdownMenuItemProps extends DropdownBaseProps {
     color?: "default" | "danger"
+    startContent?: ReactNode;
 }
 
 export function DropdownMenuItem(props: DropdownMenuItemProps) {
@@ -56,6 +57,7 @@ export function DropdownMenuItem(props: DropdownMenuItemProps) {
         <div className={`dropdown__menu__item
             dropdown__menu__item-color--${props.color || "default"}
         `}>
+            {props.startContent}
             {props.children}
         </div>
     )
