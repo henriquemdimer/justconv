@@ -1,4 +1,5 @@
 import { Api } from "../contracts/api";
+import { Conversion } from "../conversion";
 
 export interface HttpApiOptions {
     host: string;
@@ -13,7 +14,7 @@ export class HttpApi implements Api {
 
     private validateOptions(options?: Partial<HttpApiOptions>) {
         const validatedOptions = {
-            host: "localhost:8080"
+            host: "http://localhost:8080"
         }
 
         if(options) {
@@ -23,6 +24,30 @@ export class HttpApi implements Api {
         return validatedOptions;
     }
 
-    public getHealth() {}
-    public createConversion() {}
+    public async getHealth() {
+        const res = await fetch(`${this.options.host}`);
+        const body = await res.json();
+
+        return {
+            status: body.message,
+            formats: body.data.formats,
+        }
+    }
+
+    public async createConversion(conv: Conversion) {
+        const form = new FormData();
+        form.append("file", conv.blob, conv.name);
+
+        const res = await fetch(`${this.options.host}/convert?format=${conv.format.to}`, {
+            method: "POST",
+            body: form
+        });
+
+        const body = await res.json();
+
+        return {
+            message: body.message,
+            id: body.data.id
+        }
+    }
 }

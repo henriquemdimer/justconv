@@ -2,20 +2,23 @@ import { FaAngleRight } from "react-icons/fa6";
 import "./index.scss";
 import { useState } from "react";
 import { Reuleaux } from 'ldrs/react'
+import { useLibState } from "@/lib/core/state/manager";
+import { IFormatState } from "@/lib/core/app/app_state";
+import { app } from "@/lib";
+import { Format } from "@/lib/core/types/formats";
 
 export interface FormatsTableProps {
     onSelect?: (format: string) => void;
-    isLoading?: boolean;
 }
 
 export default function FormatsTable(props: FormatsTableProps) {
-    // temporary
-    const data: any[] = [];
-    const [selectedGroup, setSelectedGroup] = useState("");
+    const formats = useLibState<IFormatState>(app.state.reducers.formats);
+    const data = formats.formats;
+    const [selectedGroup, setSelectedGroup] = useState(data[0].type);
 
     return (
         <div className="formats-table">
-            {!props.isLoading ? (
+            {!formats.loading ? (
                 <>
                     <div className="formats-table__groups">
                         {data.length ? data.map((group) => (
@@ -26,8 +29,8 @@ export default function FormatsTable(props: FormatsTableProps) {
                         )) : ""}
                     </div>
                     <div className="formats-table__formats">
-                        {data.length ? data.find((g) => g.type === selectedGroup)?.formats.map((format: any) => (
-                            <div className="formats-table__formats__format">{format.name}</div>
+                        {data.length ? data.find((g) => g.type === selectedGroup)?.formats.map((format: Format) => (
+                            <div onClick={() => props.onSelect?.(format.name)} className="formats-table__formats__format">{format.name}</div>
                         )) : ""}
                     </div>
                 </>

@@ -1,3 +1,8 @@
+export interface IObservable<T> {
+    subscribe(cb: (arg: T) => void): void;
+    notify(data: T): void;
+}
+
 export class Subscriber<T> {
     public readonly id = crypto.randomUUID();
 
@@ -7,7 +12,7 @@ export class Subscriber<T> {
     }
 }
 
-export class Observable<T> {
+export class Observable<T> implements IObservable<T> {
     private subscribers: Map<string, Subscriber<T>> = new Map();
 
     public unsubscribe(id: string) {

@@ -26,7 +26,7 @@ export default function HomePage() {
 					<Input placeholder="Search a file" startContent={<CiSearch />} />
 					<div id="home__convert__header__actions">
 						<Button onClick={() => inputRef.current?.click()} variant="outline" isIconOnly color="primary" startContent={<FaPlus />} />
-						<Button color="primary" endContent={<FaAngleRight />}>Convert</Button>
+						<Button onClick={() => app.convert()} color="primary" endContent={<FaAngleRight />}>Convert</Button>
 					</div>
 				</div>
 				<Queue />
