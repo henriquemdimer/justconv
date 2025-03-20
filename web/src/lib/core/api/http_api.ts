@@ -50,4 +50,10 @@ export class HttpApi implements Api {
             id: body.data.id
         }
     }
+
+    public async downloadConversion(conv: Conversion) {
+        const res = await fetch(`${this.options.host}/convert/${conv.id}/download`);
+        const blob = await res.blob();
+        return blob;
+    }
 }

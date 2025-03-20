@@ -50,11 +50,12 @@ export function DropdownMenu(props: DropdownMenuProps) {
 export interface DropdownMenuItemProps extends DropdownBaseProps {
     color?: "default" | "danger"
     startContent?: ReactNode;
+    onClick?: () => void;
 }
 
 export function DropdownMenuItem(props: DropdownMenuItemProps) {
     return (
-        <div className={`dropdown__menu__item
+        <div onClick={props.onClick} className={`dropdown__menu__item
             dropdown__menu__item-color--${props.color || "default"}
         `}>
             {props.startContent}

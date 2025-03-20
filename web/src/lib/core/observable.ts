@@ -1,5 +1,5 @@
 export interface IObservable<T> {
-    subscribe(cb: (arg: T) => void): void;
+    subscribe(cb: (arg: T) => void): Subscriber<T>;
     notify(data: T): void;
 }
 

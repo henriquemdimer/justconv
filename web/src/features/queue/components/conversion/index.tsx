@@ -6,13 +6,13 @@ import { useState } from "react";
 import { FaAngleDown, FaRegTrashCan, FaDownload } from "react-icons/fa6";
 import Checkbox from "@/components/ui/checkbox";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { ConversionFormat, ConversionStatus } from "@/lib/core/conversion";
+import { ConversionFormat, ConversionSize, ConversionStatus } from "@/lib/core/conversion";
 import { app } from "@/lib";
 
 export interface ConversionProps {
     id: string;
     name: string;
-    size: string;
+    size: ConversionSize;
     format: ConversionFormat;
     status: ConversionStatus;
     onCheck?: (state: boolean) => void
@@ -59,12 +59,17 @@ export default function Conversion(props: ConversionProps) {
                     </DropdownMenu>
                 </Dropdown>
             </td>
-            <td>{props.size}</td>
+            <td>
+                {props.size.initial}
+                {props.size.final != undefined ? (
+                    <span> -&gt; {props.size.final}</span>
+                ) : ""}
+            </td>
             <td>
                 <Dropdown active={actionsMenuActive} onClose={() => setActionsMenuActive(false)}>
                     <Button onClick={() => setActionsMenuActive(!actionsMenuActive)} variant="outline" isIconOnly size="sm" startContent={<BsThreeDotsVertical />} />
                     <DropdownMenu side="right">
-                        <DropdownMenuItem startContent={<FaDownload />}>Download</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => app.download(props.id)} startContent={<FaDownload />}>Download</DropdownMenuItem>
                         <DropdownMenuItem color="danger" startContent={<FaRegTrashCan />}>Remove</DropdownMenuItem>
                     </DropdownMenu>
                 </Dropdown>
