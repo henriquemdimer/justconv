@@ -14,7 +14,7 @@ export interface FormatsTableProps {
 export default function FormatsTable(props: FormatsTableProps) {
     const formats = useLibState<IFormatState>(app.state.reducers.formats);
     const data = formats.formats;
-    const [selectedGroup, setSelectedGroup] = useState(data[0].type);
+    const [selectedGroup, setSelectedGroup] = useState(data[0]?.type);
 
     return (
         <div className="formats-table">
