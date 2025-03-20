@@ -7,5 +7,6 @@ export interface UpdateEvent {
 
 export interface Updater extends IObservable<UpdateEvent> {
     init(): void;
+    deinit(): void;
     watchUpdates(id: string): void;
 }

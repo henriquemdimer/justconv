@@ -1,3 +1,5 @@
+import { App } from "./app/app";
+
 export interface ConversionFormat {
     from: string;
     to?: string;
@@ -14,22 +16,42 @@ export enum ConversionStatus {
     PENDING = "Pending",
     RUNNING = "Running",
     DOWNLOADING = "Downloading",
+    FAILED = "Failed",
     DONE = "Done"
 }
 
 export class Conversion {
     public id = crypto.randomUUID().toString();
     public status = ConversionStatus.WAITING;
-    public donwloadedBlob?: Blob;
+    public downloadedBlob?: Blob;
 
-    public constructor(public name: string, public format: ConversionFormat, public size: ConversionSize, public blob: Blob) {}
-    
+    public constructor(
+      private app: App,
+      public name: string,
+      public format: ConversionFormat,
+      public size: ConversionSize,
+      public blob: Blob
+    ) {
+      this.dispatch();
+    }
+
+    private dispatch() {
+      this.app.state.dispatch(this.app.state.reducers.queue.set(this));
+    }
+
     public setFormat(format: string) {
         this.format.to = format;
+        this.dispatch();
+    }
+
+    public setDownloadedBlob(blob: Blob) {
+      this.downloadedBlob = blob;
+      this.dispatch();
     }
 
     public updateStatus(status: ConversionStatus) {
         this.status = status;
+        this.dispatch();
     }
 
     public syncId(server_id: string) {
@@ -38,5 +60,6 @@ export class Conversion {
 
     public setFinalSize(size: string) {
         this.size.final = size;
+        this.dispatch();
     }
 }

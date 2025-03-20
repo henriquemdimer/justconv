@@ -42,6 +42,7 @@
             th, td {
                 padding: var(--queue-td-padding);
                 text-align: left;
+                white-space: nowrap;
             }
 
             thead {

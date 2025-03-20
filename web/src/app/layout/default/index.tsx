@@ -3,6 +3,9 @@ import "./index.scss";
 import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import Sidebar from "@/features/sidebar/sidebar";
+import { app } from "@/lib";
+import { IErroState } from "@/lib/core/app/app_state";
+import { useLibState } from "@/lib/core/state/manager";
 import { ReactNode } from "react"
 import { FaGithub } from "react-icons/fa6";
 
@@ -11,8 +14,11 @@ export interface DefaultLayoutProps {
 }
 
 export default function DefaultLayout(props: DefaultLayoutProps) {
+    const errors = useLibState<IErroState>(app.state.reducers.errors)
+
     return (
         <Container>
+            <div id="error-magnifier" className={`${errors.list.length > 0 ? "error-magnifier--active" : ""}`}>Errors: {errors.list.length}</div>
             <div id="layout">
                 <div className="layout__side-column">
                     <div className="layout__panel">

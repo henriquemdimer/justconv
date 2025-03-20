@@ -50,3 +50,24 @@
         justify-content: space-between;
     }
 }
+
+#error-magnifier {
+  position: fixed;
+  bottom: -100%;
+  right: 0;
+  background-color: var(--danger);
+  color: white;
+  padding: 8px 14px;
+  font-weight: bold;
+  font-size: 14px;
+  border-top-left-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+
+  &.error-magnifier--active {
+    opacity: 1;
+    bottom: 0;
+    pointer-events: all;
+  }
+}

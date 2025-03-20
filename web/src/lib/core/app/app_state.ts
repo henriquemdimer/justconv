@@ -1,4 +1,5 @@
 import { Conversion } from "../conversion";
+import { Error } from "../error";
 import { Server } from "../server";
 import { State } from "../state/state";
 import { FormatsGroup } from "../types/formats";
@@ -35,7 +36,7 @@ export interface IFormatState {
 
 export class FormatState extends State<IFormatState> {
     private formats: FormatsGroup[] = [];
-    private loading: boolean = false;
+    private loading: boolean = true;
 
     public get data() {
         return {
@@ -71,8 +72,6 @@ export class ServerState extends State<IServerState> {
         for (const server of servers) {
             this.list.set(server.options.host, server);
         }
-
-        if(!this.active) this.active = servers[0];
         return this;
     }
 
@@ -80,4 +79,23 @@ export class ServerState extends State<IServerState> {
         this.active = server;
         return this;
     }
+}
+
+export interface IErroState {
+  list: Error[];
+}
+
+export class ErrorState extends State<IErroState> {
+  private list: Error[] = [];
+
+  public get data() {
+    return {
+      list: this.list,
+    }
+  }
+
+  public append(error: Error) {
+    this.list.push(error);
+    return this;
+  }
 }

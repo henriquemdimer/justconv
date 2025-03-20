@@ -37,14 +37,22 @@ export default function Conversion(props: ConversionProps) {
             setFormatSelectionMenuActive(!formatSelectionMenuActive)
     }
 
+    function defineColorTag() {
+      if(props.status === ConversionStatus.DOWNLOADING)
+        return "primary";
+      else if(props.status === ConversionStatus.DONE)
+        return "success";
+      else if(props.status === ConversionStatus.FAILED)
+        return "danger";
+      else if(props.status !== ConversionStatus.WAITING)
+        return "warn";
+    }
+
     return (
         <>
             <td><Checkbox isChecked={props.isChecked} onChange={props.onCheck} /></td>
             <td>{props.name}</td>
-            <td><Tag color={`${props.status === ConversionStatus.WAITING ?
-                "default" : props.status === ConversionStatus.DONE ?
-                    "success" : "warn"}`}
-            >{props.status}</Tag></td>
+            <td><Tag color={defineColorTag()}>{props.status}</Tag></td>
             <td>
                 <Dropdown onClose={() => setFormatSelectionMenuActive(false)} active={formatSelectionMenuActive}>
                     <Button onClick={() => toggleFormatSelectionMenu()} variant="outline" size="sm" endContent={<FaAngleDown />}>
