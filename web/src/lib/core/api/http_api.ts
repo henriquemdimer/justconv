@@ -42,6 +42,7 @@ export class HttpApi implements Api {
             method: "POST",
             body: form
         });
+        if(!res.ok) throw new Error("Request Failed")
 
         const body = await res.json();
 
@@ -53,6 +54,7 @@ export class HttpApi implements Api {
 
     public async downloadConversion(conv: Conversion) {
         const res = await fetch(`${this.options.host}/convert/${conv.id}/download`);
+        if (!res.ok) throw new Error("Request Failed");
         const blob = await res.blob();
         return blob;
     }

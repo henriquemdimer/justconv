@@ -37,7 +37,7 @@ export class Server {
       this.updater.init();
       this.watchUpdates();
     } catch (err) {
-      new Error(this.app, "Server is not healthy");
+      new Error(this.app, "Server is not healthy, trying to reconnect in 10 seconds");
 
       setTimeout(() => {
         this.setActive();
@@ -59,11 +59,15 @@ export class Server {
         if (status == ConversionStatus.DONE) {
           conv.updateStatus(ConversionStatus.DOWNLOADING);
 
-          const file = await this.api.downloadConversion(conv);
-          conv.setDownloadedBlob(file);
+          try {
+            const file = await this.api.downloadConversion(conv);
+            conv.setDownloadedBlob(file);
 
-          conv.updateStatus(ConversionStatus.DONE);
-          conv.setFinalSize(convertBytesAuto(file.size));
+            conv.updateStatus(ConversionStatus.DONE);
+            conv.setFinalSize(convertBytesAuto(file.size));
+          } catch(err: any) {
+            conv.updateStatus(ConversionStatus.FAILED);
+          }
         } else {
           conv.updateStatus(status);
         }

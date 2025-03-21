@@ -23,7 +23,7 @@ export default function Queue() {
     }
   }
 
-  function checkAll() {
+  async function checkAll() {
     if (checked.length >= convs.queue.size) {
       setChecked([]);
     } else {

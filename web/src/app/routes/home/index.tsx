@@ -13,8 +13,9 @@ export default function HomePage() {
 
 	function onFileUpload() {
 		const files = inputRef.current?.files;
-		if (files) {
+		if (inputRef.current && files) {
 			app.uploadFiles(files);
+      inputRef.current.value = "";
 		}
 	}
 

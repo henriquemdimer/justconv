@@ -1,6 +1,6 @@
 import { FaAngleRight } from "react-icons/fa6";
 import "./index.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Reuleaux } from 'ldrs/react'
 import { useLibState } from "@/lib/core/state/manager";
 import { IFormatState } from "@/lib/core/app/app_state";
@@ -15,6 +15,10 @@ export default function FormatsTable(props: FormatsTableProps) {
     const formats = useLibState<IFormatState>(app.state.reducers.formats);
     const data = formats.formats;
     const [selectedGroup, setSelectedGroup] = useState(data[0]?.type);
+
+    useEffect(() => {
+      if(!selectedGroup) setSelectedGroup(data[0]?.type);
+    }, [data]);
 
     return (
         <div className="formats-table">

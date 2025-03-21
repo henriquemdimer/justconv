@@ -20,10 +20,12 @@
       transform: translate(-50%, 20px) scale(0.9);
       transition: var(--transition);
       z-index: 100;
+      pointer-events: none;
 
       &.queue__mass-actions--active {
         transform: translate(-50%, 0) scale(1);
         opacity: 1;
+        pointer-events: all;
       }
     }
     
