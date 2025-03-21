@@ -4,6 +4,27 @@
     gap: var(--queue-flex-gap);
     overflow: auto;
     height: 100%;
+
+    #queue__mass-actions {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      background-color: white;
+      padding: 5px 8px;
+      border: 2px solid var(--layout-panel-border-color);
+      box-shadow: var(--layout-panel-box-shadow);
+      border-radius: 8px;
+      display: flex;
+      gap: 8px;
+      opacity: 0;
+      transform: translate(-50%, 20px) scale(0.9);
+      transition: var(--transition);
+
+      &.queue__mass-actions--active {
+        transform: translate(-50%, 0) scale(1);
+        opacity: 1;
+      }
+    }
     
     &::-webkit-scrollbar {
         width: var(--queue-scrollbar-width);
@@ -53,6 +74,21 @@
 
             td {
                 padding-left: calc(var(--queue-td-padding) + 2px);
+
+                &.queue__conversion__status {
+                  min-width: 120px;
+                }
+
+                &.queue__conversion__format {
+                  min-width: 155px;
+                }
+
+                &.queue__conversion__name {
+                  max-width: 150px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
             }
 
             th {

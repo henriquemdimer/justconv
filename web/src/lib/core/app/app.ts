@@ -4,12 +4,9 @@ import { Server } from "../server";
 import { StateManager } from "../state/manager";
 import { ErrorState, FormatState, QueueState, ServerState } from "./app_state";
 import { FormatsGroup } from "../types/formats";
-import { Subscriber } from "../observable";
-import { UpdateEvent } from "../contracts/updater";
 import { Error } from "../error";
 
 export class App {
-    private sub?: Subscriber<UpdateEvent>;
     public readonly state = new StateManager<{
         queue: QueueState;
         formats: FormatState;
@@ -32,38 +29,11 @@ export class App {
 
             if(st.data.active) {
               lastActive = st.data.active;
-              this.watchUpdaterEvents(st.data.active);
             }
         });
 
         this.state.dispatch(this.state.reducers.servers.setList(...servers));
         servers[0].setActive();
-    }
-
-    public watchUpdaterEvents(server: Server) {
-        if(this.sub) this.sub.unsubscribe();
-
-        this.sub = server.updater.subscribe(async ev => {
-            const conv = this.state.reducers.queue.data.queue.get(ev.id);
-
-            if(conv) {
-                const status = ev.status === "DONE" ? ConversionStatus.DONE : 
-                ev.status === "PENDING" ? ConversionStatus.PENDING : 
-                ConversionStatus.RUNNING;
-                
-                if(status == ConversionStatus.DONE) {
-                    conv.updateStatus(ConversionStatus.DOWNLOADING);
-
-                    const file = await server.api.downloadConversion(conv);
-                    conv.setDownloadedBlob(file);
-
-                    conv.updateStatus(ConversionStatus.DONE);
-                    conv.setFinalSize(convertBytesAuto(file.size));
-                } else {
-                    conv.updateStatus(status);
-                }
-            }
-        })
     }
 
     public getActiveServer() {

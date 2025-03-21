@@ -27,6 +27,11 @@ export class QueueState extends State<IQueueState> {
         this.queue.set(conv.id, conv);
         return this;
     }
+
+    public remove(id: string) {
+      this.queue.delete(id);
+      return this;
+    }
 }
 
 export interface IFormatState {
