@@ -33,7 +33,7 @@ export default function Conversion(props: ConversionProps) {
   }
 
   function toggleFormatSelectionMenu() {
-    if (props.status === ConversionStatus.WAITING)
+    if (props.status === ConversionStatus.WAITING || props.status === ConversionStatus.FAILED)
       setFormatSelectionMenuActive(!formatSelectionMenuActive)
   }
 

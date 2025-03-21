@@ -105,7 +105,7 @@ export class App {
         if(!server) return;
 
         for (const conversion of this.state.reducers.queue.data.queue.values()) {
-            if(conversion.status !== ConversionStatus.WAITING || !conversion.format.to) continue;
+            if((conversion.status !== ConversionStatus.WAITING && conversion.status !== ConversionStatus.FAILED) || !conversion.format.to) continue;
 
             conversion.updateStatus(ConversionStatus.UPLOADING);
             const old_id = conversion.id;

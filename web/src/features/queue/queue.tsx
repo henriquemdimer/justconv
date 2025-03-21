@@ -51,11 +51,17 @@ export default function Queue() {
     setChecked([]);
   }
 
+  function downloadAll() {
+    for(const conv of getCheckedConversions()) {
+      app.download(conv.id);
+    }
+  }
+
   return (
     <div id="queue">
       <div id="queue__mass-actions" className={`${checked.length > 0 ? "queue__mass-actions--active" : ""}`}>
         <Button onClick={() => removeAll()} color="danger" startContent={<FaRegTrashCan />}>Delete all</Button>
-        <Button color="primary" startContent={<FaDownload />}>Download all</Button>
+        <Button onClick={() => downloadAll()} color="primary" startContent={<FaDownload />}>Download all</Button>
         <Dropdown  onClose={() => setFormatSelectionMenuActive(false)} active={formatSelectionMenuActive}>
           <Button color="primary" variant="flat" onClick={() => setFormatSelectionMenuActive(!formatSelectionMenuActive)} endContent={<FaAngleDown />}>
             Select format for all
