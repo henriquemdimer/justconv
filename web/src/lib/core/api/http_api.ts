@@ -25,13 +25,14 @@ export class HttpApi implements Api {
     }
 
     public async getHealth() {
-        const res = await fetch(`${this.options.host}`);
-        const body = await res.json();
+    	const res = await fetch(`${this.options.host}/`);
+	if(!res.ok) throw new Error(`Request failed ${res.status}: ${res.statusText}`);
 
-        return {
-            status: body.message,
-            formats: body.data.formats,
-        }
+	const body = await res.json();
+	return {
+		status: body.message,
+		formats: body.data.formats
+	}
     }
 
     public async createConversion(conv: Conversion) {
@@ -42,10 +43,9 @@ export class HttpApi implements Api {
             method: "POST",
             body: form
         });
-        if(!res.ok) throw new Error("Request Failed")
+        if(!res.ok) throw new Error(`Request failed ${res.status}: ${res.statusText}`);
 
         const body = await res.json();
-
         return {
             message: body.message,
             id: body.data.id
@@ -54,7 +54,8 @@ export class HttpApi implements Api {
 
     public async downloadConversion(conv: Conversion) {
         const res = await fetch(`${this.options.host}/convert/${conv.id}/download`);
-        if (!res.ok) throw new Error("Request Failed");
+        if (!res.ok) throw new Error(`Request failed ${res.status}: ${res.statusText}`);
+
         const blob = await res.blob();
         return blob;
     }
