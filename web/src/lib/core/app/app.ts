@@ -4,7 +4,6 @@ import { Error } from "../error";
 import { Server } from "../server";
 import { StateManager } from "../state/manager";
 import { ErrorState, FormatState, QueueState, ServerState, UiState } from "./app_state";
-import { Toast } from "../ui/toast";
 
 export class App {
 	public readonly state = new StateManager<{
