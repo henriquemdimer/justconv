@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import "./index.scss";
 import { Reuleaux } from 'ldrs/react'
-import { CommonSizes } from "@/utils/sizes";
+import { CommonSizes } from "@/utils/common";
 
 export type ButtonVariants = "default" | "outline" | "flat" | "ghost";
 export type ButtonRadius = CommonSizes | "none" | "full";

@@ -3,7 +3,8 @@ import { Conversion, ConversionStatus } from "../conversion";
 import { Error } from "../error";
 import { Server } from "../server";
 import { StateManager } from "../state/manager";
-import { ErrorState, FormatState, QueueState, ServerState } from "./app_state";
+import { ErrorState, FormatState, QueueState, ServerState, UiState } from "./app_state";
+import { Toast } from "../ui/toast";
 
 export class App {
 	public readonly state = new StateManager<{
@@ -11,11 +12,13 @@ export class App {
 		formats: FormatState;
 		servers: ServerState;
 		errors: ErrorState;
+		ui: UiState
 	}>({
 		queue: new QueueState(),
 		formats: new FormatState(),
 		servers: new ServerState(),
 		errors: new ErrorState(),
+		ui: new UiState(),
 	})
 
 	public constructor(servers: Server[] = [new Server(this)]) {
@@ -24,12 +27,12 @@ export class App {
 
 		let lastActive: Server | undefined;
 		this.state.reducers.servers.subscribe(async (st) => {
-			if(st.data.active) {
-				if(lastActive && lastActive.options.host !== st.data.active.options.host)
+			if (st.data.active) {
+				if (lastActive && lastActive.options.host !== st.data.active.options.host)
 					lastActive.deinit();
 
 				lastActive = st.data.active;
-			}	
+			}
 		});
 
 		this.state.dispatch(this.state.reducers.servers.setList(...servers));

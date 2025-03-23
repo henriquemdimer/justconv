@@ -1,12 +1,12 @@
-import "./index.scss";
-import Input from "@/components/ui/input";
-import { CiSearch } from "react-icons/ci";
-import Button from "@/components/ui/button";
-import { FaAngleRight, FaPlus } from "react-icons/fa6";
-import Queue from "@/features/queue/queue";
 import DefaultLayout from "@/app/layout/default";
-import { useRef } from "react";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
+import Queue from "@/features/queue/queue";
 import { app } from "@/lib";
+import { useRef } from "react";
+import { CiSearch } from "react-icons/ci";
+import { FaAngleRight, FaPlus } from "react-icons/fa6";
+import "./index.scss";
 
 export default function HomePage() {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -15,7 +15,7 @@ export default function HomePage() {
 		const files = inputRef.current?.files;
 		if (inputRef.current && files) {
 			app.uploadFiles(files);
-      inputRef.current.value = "";
+			inputRef.current.value = "";
 		}
 	}
 

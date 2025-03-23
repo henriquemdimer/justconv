@@ -3,6 +3,7 @@ import { Error } from "../error";
 import { Server } from "../server";
 import { State } from "../state/state";
 import { FormatsGroup } from "../types/formats";
+import { Toast } from "../ui/toast";
 
 export interface IQueueState {
     queue: Map<string, Conversion>;
@@ -103,4 +104,28 @@ export class ErrorState extends State<IErroState> {
     this.list.push(error);
     return this;
   }
+}
+
+export interface IUiState {
+	toasts: Map<string, Toast>;
+}
+
+export class UiState extends State<IUiState> {
+	private toasts: Map<string, Toast> = new Map();
+
+	public get data() {
+		return {
+			toasts: this.toasts
+		}
+	}
+
+	public append(toast: Toast) {
+		this.toasts.set(toast.id, toast);
+		return this;
+	}
+
+	public remove(id: string) {
+		this.toasts.delete(id);
+		return this;
+	}
 }
