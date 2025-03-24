@@ -1,0 +1,14 @@
+.server-status {
+  min-width: 10px;
+  min-height: 10px;
+  border-radius: 50px;
+  background-color: green;
+
+  &--ok {
+    background-color: #28a745;
+  }
+
+  &--bad {
+    background-color: var(--danger);
+  }
+}

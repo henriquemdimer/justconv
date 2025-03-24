@@ -48,14 +48,15 @@ export function DropdownMenu(props: DropdownMenuProps) {
 }
 
 export interface DropdownMenuItemProps extends DropdownBaseProps {
-    color?: "default" | "danger"
+    color?: "default" | "danger" | "primary"
     startContent?: ReactNode;
     onClick?: () => void;
+    maxWidth?: string;
 }
 
 export function DropdownMenuItem(props: DropdownMenuItemProps) {
     return (
-        <div onClick={props.onClick} className={`dropdown__menu__item
+        <div style={{maxWidth: props.maxWidth}} onClick={props.onClick} className={`dropdown__menu__item
             dropdown__menu__item-color--${props.color || "default"}
         `}>
             {props.startContent}

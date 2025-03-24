@@ -58,6 +58,9 @@
             transition: var(--transition);
             font-size: 14px;
             border-radius: 8px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
 
             &-color {
                 &--default {
@@ -66,6 +69,16 @@
                     &:hover {
                         background-color: var(--default);
                     }
+                }
+
+                &--primary {
+                  background-color: white;
+                  color: var(--primary);
+
+                  &:hover {
+                    background-color: var(--primary);
+                    color: white;
+                  }
                 }
 
                 &--danger {

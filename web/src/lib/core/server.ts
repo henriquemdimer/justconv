@@ -14,11 +14,19 @@ export interface ServerOptions {
 	updaterHost: string;
 }
 
+export enum ServerStatus {
+	UNKNOWN,
+	HEALTHY,
+	NOT_HEALTHY
+}
+
 export class Server {
 	public readonly options: ServerOptions;
 	public readonly api: Api;
 	public readonly updater: Updater;
 	private sub?: Subscriber<UpdateEvent>;
+	public loading = false;
+	public status = ServerStatus.UNKNOWN;
 
 	public constructor(private app: App, options?: Partial<ServerOptions>) {
 		this.options = this.validateOptions(options);
@@ -32,31 +40,45 @@ export class Server {
 
 	public async setActive() {
 		try {
-			await this.api.getHealth();
 			this.app.state.dispatch(this.app.state.reducers.servers.setActive(this));
+			await this.checkHealth();
+			this.status = ServerStatus.HEALTHY;
+			this.dispatch();
+
 			this.getSupportedFormats();
 
 			this.updater.init();
 			this.watchUpdates();
 		} catch (err) {
-			new Error(this.app, "Server is not healthy, trying to reconnect in 10 seconds");
+			this.status = ServerStatus.NOT_HEALTHY;
+			this.dispatch();
 
 			setTimeout(() => {
-				this.setActive();
+				if(this.app.state.reducers.servers.data.active?.options.host === this.options.host) this.setActive();
 			}, 10000);
 		}
 	}
 
+	public dispatch() {
+		this.app.state.dispatch(this.app.state.reducers.servers.save(this));
+	}
+
 	public deinit() {
+		this.status = ServerStatus.UNKNOWN;
 		this.sub?.unsubscribe();
-		this.updater.deinit()
+		this.updater.deinit();
+		this.app.state.dispatch(this.app.state.reducers.formats.set([], true));
+	}
+
+	public checkHealth() {
+		return this.api.getHealth();
 	}
 
 	public async getSupportedFormats() {
 		this.app.state.dispatch(this.app.state.reducers.formats.set([], true));
 
 		try {
-			const res = await this.api.getHealth();
+			const res = await this.checkHealth();
 			if (res && res.formats) {
 				const groups: FormatsGroup[] = [];
 

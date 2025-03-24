@@ -12,7 +12,19 @@
   align-items: center;
   justify-content: center;
   gap: var(--button-flex-gap);
-  white-space: nowrap;
+
+  &__content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__end-content, &__start-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 15px;
+  }
 
   &--icon-only {
     padding: 10px;

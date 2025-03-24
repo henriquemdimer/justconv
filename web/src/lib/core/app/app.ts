@@ -20,7 +20,7 @@ export class App {
 		ui: new UiState(),
 	})
 
-	public constructor(servers: Server[] = [new Server(this)]) {
+	public constructor(servers: Server[] = [new Server(this), new Server(this, { host: "http://justconv.henriquemdimer.com" })]) {
 		window.addEventListener('unhandledrejection', (e) => new Error(this, e.reason));
 		window.addEventListener('error', (e) => new Error(this, e.message));
 

@@ -85,6 +85,11 @@ export class ServerState extends State<IServerState> {
         this.active = server;
         return this;
     }
+
+    public save(server: Server) {
+    	this.list.set(server.options.host, server);
+	return this;
+    }
 }
 
 export interface IErroState {
