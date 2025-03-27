@@ -1,36 +1,51 @@
-import { app } from "@/lib";
-import { IServerState } from "@/lib/core/app/app_state";
-import { useLibState } from "@/lib/core/state/manager";
-import { ServerStatus as LibServerStatus } from "@/lib/core/server";
+import { Reuleaux } from "ldrs/react";
 import "./server_status.scss"
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export interface ServerStatusProps {
 	host: string;
 }
 
 export function ServerStatus(props: ServerStatusProps) {
-	const [ok, setOk] = useState(false);
-	const servers = useLibState<IServerState>(app.state.reducers.servers);
-	const match = servers.list.get(props.host);
+	const [isHealthy, setIsHealthy] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		(async () => {
-			if(match) {
-				if(match.status === LibServerStatus.UNKNOWN) {
-					try {
-						await match.checkHealth();
-						setOk(true);
-					} catch {
-						setOk(false);
-					}
-				} else if(match.status === LibServerStatus.NOT_HEALTHY) setOk(false);
-				else setOk(true);
+			const controller = new AbortController();
+			const timer = setTimeout(() => controller.abort(), 5000);
+			try {
+				const res = await fetch(props.host, { signal: controller.signal });
+				clearTimeout(timer);
+				if (!res.ok) setIsHealthy(false);
+
+				const body = await res.json();
+				if (body && body.message) setIsHealthy(true);
+				else setIsHealthy(false)
+			} catch {
+				setIsHealthy(false)
+			} finally {
+				setIsLoading(false)
 			}
 		})();
 	}, [props.host]);
 
 	return (
-		<div className={`server-status server-status--${ok ? "ok": "bad"}`} />
+		<>
+			{isLoading ? (
+				<i className="button__loader">
+					<Reuleaux
+						size="15"
+						stroke="3"
+						stroke-length="0.15"
+						bg-opacity="0.5"
+						speed="1.2"
+						color="var(--primary)"
+					/>
+				</i>
+			) : (
+				<div className={`server-status server-status--${isHealthy ? "ok" : "bad"}`} />
+			)}
+		</>
 	)
 }

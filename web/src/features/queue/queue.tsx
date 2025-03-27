@@ -1,101 +1,125 @@
-import "./queue.scss";
-import Conversion from "./components/conversion";
-import Checkbox from "@/components/ui/checkbox";
-import { useLibState } from "@/lib/core/state/manager";
-import { IQueueState } from "@/lib/core/app/app_state";
-import { app } from "@/lib";
-import { useState } from "react";
 import Button from "@/components/ui/button";
-import { FaAngleDown, FaDownload, FaRegTrashCan } from "react-icons/fa6";
+import Checkbox from "@/components/ui/checkbox/index.tsx";
 import { Dropdown, DropdownMenu } from "@/components/ui/dropdown";
+import { useConversion } from "@/store/conversion";
+import { ConversionStatus, Conversion as LibConversion } from "@/types/conversion.ts";
+import { useState } from "react";
+import { BiCollapseVertical } from "react-icons/bi";
+import { FaDownload, FaRegTrashCan } from "react-icons/fa6";
+import Conversion from "./components/conversion/index.tsx";
 import FormatsTable from "./components/formats-table";
+import "./queue.scss";
 
 export default function Queue() {
-  const convs = useLibState<IQueueState>(app.state.reducers.queue);
-  const [checked, setChecked] = useState<string[]>([]);
-  const [formatSelectionMenuActive, setFormatSelectionMenuActive] = useState(false);
+	const [formatSelectionMenuActive, setFormatSelectionMenuActive] = useState(false);
+	const conversionStore = useConversion();
+	const checked = [...conversionStore.list.values()].filter((c) => c.checked);
 
-  function updateSelectionList(id: string, state: boolean) {
-    if (state) {
-      setChecked([...checked, id]);
-    } else {
-      setChecked(checked.filter((i) => i !== id));
-    }
-  }
+	function iterate(fn: (conv: LibConversion) => void) {
+		for (const conv of conversionStore.list.values()) {
+			fn(conv);
+		}
+	}
 
-  async function checkAll() {
-    if (checked.length >= convs.queue.size) {
-      setChecked([]);
-    } else {
-      setChecked(Array.from(convs.queue.values().map((c) => c.id)));
-    }
-  }
+	function onFormatSelect(fmt: string) {
+		iterate((conv) => {
+			if (conv.checked)
+				conversionStore.setFormat(conv.id, fmt);
+		});
 
-  function getCheckedConversions() {
-    return app.state.reducers.queue.data.queue.values().filter((conv) => checked.includes(conv.id));
-  }
+		setFormatSelectionMenuActive(false);
+	}
 
-  function onFormatSelect(fmt: string) {
-    for(const conv of getCheckedConversions()) {
-      conv.setFormat(fmt);
-    }
+	function removeAll() {
+		iterate((conv) => {
+			if (conv.checked)
+				conversionStore.remove(conv.id);
+		});
+	}
 
-    setFormatSelectionMenuActive(false);
-  }
+	function downloadAll() {
+		alert("NOT IMPLEMENTED");
+	}
 
-  function removeAll() {
-    for (const conv of getCheckedConversions()) {
-      app.state.dispatch(app.state.reducers.queue.remove(conv.id));
-    }
+	function checkAll() {
+		let check = false;
+		if (checked.length > 0 && checked.length < conversionStore.list.size || !checked.length)
+			check = true;
 
-    setChecked([]);
-  }
+		iterate((conv) => {
+			conversionStore.setChecked(conv.id, check);
+		});
+	}
 
-  function downloadAll() {
-    for(const conv of getCheckedConversions()) {
-      app.download(conv.id);
-    }
-  }
-
-  return (
-    <div id="queue">
-      <div id="queue__mass-actions" className={`${checked.length > 0 ? "queue__mass-actions--active" : ""}`}>
-        <Button onClick={() => removeAll()} color="danger" startContent={<FaRegTrashCan />}>Delete all</Button>
-        <Button onClick={() => downloadAll()} color="primary" startContent={<FaDownload />}>Download all</Button>
-        <Dropdown  onClose={() => setFormatSelectionMenuActive(false)} active={formatSelectionMenuActive}>
-          <Button color="primary" variant="flat" onClick={() => setFormatSelectionMenuActive(!formatSelectionMenuActive)} endContent={<FaAngleDown />}>
-            Select format for all
-          </Button>
-          <DropdownMenu side="top">
-            <FormatsTable onSelect={(fmt) => onFormatSelect(fmt)} />
-          </DropdownMenu>
-        </Dropdown>
-      </div>
-      <div id="queue__header">
-        <span>Conversion queue</span>
-        <span>0 / 3</span>
-      </div>
-      <div id="queue__table">
-        <table>
-          <thead>
-            <tr>
-              <th><Checkbox onChange={() => checkAll()} isChecked={convs.queue.size >= 1 && convs.queue.size === checked.length ? true : null} isIndeterminate={checked.length > 0 && checked.length < convs.queue.size} /></th>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Format</th>
-              <th>Size</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {convs.queue.values().map((conv) => (
-              <tr>
-                <Conversion isChecked={checked.includes(conv.id) || false} onCheck={(state) => updateSelectionList(conv.id, state)} id={conv.id} name={conv.name} size={conv.size} status={conv.status} format={conv.format} />
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div >
-  )
+	return (
+		<div id="queue">
+			<div id="queue__mass-actions" className={`${checked.length ? "queue__mass-actions--active" : ""}`}>
+				<Button
+					onClick={() => removeAll()}
+					color="danger"
+					startContent={<FaRegTrashCan />}>
+					Delete all
+				</Button>
+				<Button
+					onClick={() => downloadAll()} color="primary" startContent={<FaDownload />}>
+					Download all
+				</Button>
+				<Dropdown
+					onClose={() => setFormatSelectionMenuActive(false)} active={formatSelectionMenuActive}>
+					<Button
+						color="primary"
+						variant="flat"
+						onClick={() => setFormatSelectionMenuActive(!formatSelectionMenuActive)}
+						endContent={<BiCollapseVertical />}>
+						Select format for all
+					</Button>
+					<DropdownMenu side="top">
+						{formatSelectionMenuActive && (<FormatsTable
+							onSelect={(fmt) => onFormatSelect(fmt)} />)}
+					</DropdownMenu>
+				</Dropdown>
+			</div>
+			<div id="queue__header">
+				<span>Conversion queue</span>
+				<span>{[...conversionStore.list.values()]
+					.filter((c) =>
+						c.status === ConversionStatus.DONE)
+					.length} / {conversionStore.list.size}</span>
+			</div>
+			<div id="queue__table">
+				<table>
+					<thead>
+						<tr>
+							<th>{<Checkbox
+								onChange={checkAll}
+								isChecked={checked.length > 0 &&
+									checked.length === conversionStore.list.size ?
+									true : null}
+								isIndeterminate={checked.length > 0 &&
+									checked.length !== conversionStore.list.size} />
+							}</th>
+							<th>Name</th>
+							<th>Status</th>
+							<th>Format</th>
+							<th>Size</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{[...conversionStore.list.values()].map((conv) => (
+							<tr key={conv.id}>
+								<Conversion
+									isChecked={conv.checked}
+									id={conv.id}
+									name={conv.name}
+									size={conv.size}
+									status={conv.status}
+									format={conv.format} />
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</div >
+	)
 }

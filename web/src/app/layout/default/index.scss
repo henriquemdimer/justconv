@@ -71,3 +71,27 @@
     pointer-events: all;
   }
 }
+
+#preloader {
+  width: 100svw;
+  height: 100svh;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+  background-color: var(--primary);
+  color: white;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 20px;
+  font-weight: bold;
+
+  &.preloader--active {
+    opacity: 1;
+    pointer-events: all;
+  }
+}

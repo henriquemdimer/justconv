@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import "./index.scss";
 import { IoInformationCircleSharp } from "react-icons/io5";
-import Reuleaux from "ldrs/react/Reuleaux";
+import { Reuleaux } from "ldrs/react";
 import { CommonColors, CommonVariants } from "@/utils/common";
 import { FaTimes } from "react-icons/fa";
 

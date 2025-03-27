@@ -4,7 +4,7 @@ export interface IObservable<T> {
 }
 
 export class Subscriber<T> {
-    public readonly id = crypto.randomUUID();
+    public readonly id = "hi";
 
     public constructor(private readonly observer: Observable<T>, public readonly cb: (arg: T) => void) {}
     public unsubscribe() {

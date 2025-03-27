@@ -35,11 +35,12 @@ export function Dropdown(props: DropdownContainerProps) {
 
 export interface DropdownMenuProps extends DropdownBaseProps {
     side?: "top" | "bottom" | "left" | "right";
+    maxHeight?: string;
 }
 
 export function DropdownMenu(props: DropdownMenuProps) {
     return (
-        <div className={`dropdown__menu
+        <div style={{maxHeight: props.maxHeight}} className={`dropdown__menu
             dropdown__menu--${props.side || "bottom"}
          `}>
             {props.children}

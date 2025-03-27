@@ -6,14 +6,14 @@ import Button from "@/components/ui/button";
 import { BiCollapseVertical } from "react-icons/bi";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { app } from "@/lib";
-import { useLibState } from "@/lib/core/state/manager";
-import { IServerState } from "@/lib/core/app/app_state";
+import { useServers } from "@/store/servers";
 import { ServerStatus } from "./components/server_status/server_status";
+import { Server } from "@/types/server";
+import { WebsocketAdapter } from "@/lib/adapters/ws_adapter";
 
 export default function Sidebar() {
 	const [menuActive, setMenuActive] = useState(false);
-	const servers = useLibState<IServerState>(app.state.reducers.servers);
+	const serverStore = useServers();
 
 	return (
 		<nav id="sidebar">
@@ -42,18 +42,29 @@ export default function Sidebar() {
 						endContent={<BiCollapseVertical />}
 						color="default"
 						variant="flat">
-						{servers.active?.options.host}
+						{serverStore.getActive() ? serverStore.getActive()?.host : (
+							<span>Add a server</span>
+						)}
 					</Button>
-					<DropdownMenu>
-						{servers.list.values().map((server) => (
+					<DropdownMenu maxHeight="200px">
+						{menuActive && [...serverStore.servers.values()].map((s) => (
 							<DropdownMenuItem
-								onClick={() => { server.setActive(); setMenuActive(false) }}
-								maxWidth="200px"
-								startContent={<ServerStatus host={server.options.host} />}>
-								{server.options.host}
+								key={s.host}
+								startContent={<ServerStatus host={s.host} />}
+								onClick={() => serverStore.setActive(s)}>
+								{s.host}
 							</DropdownMenuItem>
 						))}
-						<DropdownMenuItem color="primary" startContent={<FaPlus />}>Add</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => serverStore.set(
+								new Server("http://localhost:8080",
+									new WebsocketAdapter({ host: "ws://localhost:8080/ws" })
+								)
+							)}
+							color="primary"
+							startContent={<FaPlus />}>
+							Add
+						</DropdownMenuItem>
 					</DropdownMenu>
 				</Dropdown>
 			</div>

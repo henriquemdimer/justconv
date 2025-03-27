@@ -18,7 +18,7 @@ export default function Checkbox(props: CheckboxProps) {
 
     return (
         <div onClick={handleOnClick} className={`checkbox ${props.isIndeterminate ? "checkbox--indeterminate" : ""}`}>
-            <input checked={props.isChecked === null ? props.isIndeterminate : props.isChecked} ref={inputRef} type="checkbox" />
+            <input onChange={() => {}} checked={props.isChecked === null ? props.isIndeterminate : props.isChecked} ref={inputRef} type="checkbox" />
             <span className="checkbox__checkmark"></span>
             {props.children}
         </div>
