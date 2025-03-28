@@ -6,20 +6,20 @@ LDFLAGS="-s -w"
 GCFLAGS="-l -c 4"
 CMDFLAGS=-v -trimpath
 
-.PHONY: deps clean run dev
+.PHONY: dev run build clean deps
 
-all: deps $(TARGET)
+all: deps build
 
-$(TARGET): $(BIN_DIR)
+build: $(BIN_DIR)
 	go build -o $(TARGET) -gcflags=$(GCFLAGS) -ldflags=$(LDFLAGS) $(CMDFLAGS) $(SRC)
 
 $(BIN_DIR):
-	@mkdir -p $(BIN_DIR)
-
-deps:
-	go mod tidy
+	mkdir -p $(BIN_DIR)
 
 run:
 	@./$(TARGET)
 
-dev: $(TARGET) run
+dev: build run
+
+clean:
+	@rm -rf $(BIN_DIR)
