@@ -1,0 +1,7 @@
+{
+	"imports": {
+		"@/": "./src/",
+		"@components/": "./src/components/",
+		"@utils/": "./src/utils/"
+	}
+}

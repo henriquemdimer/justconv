@@ -1,0 +1,14 @@
+{
+  "importMap": "./import_map.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": ["dom", "esnext"]
+  },
+  "lint": {
+    "enable": false
+  },
+  "fmt": {
+    "enable": false
+  },
+  "unstable": ["sloppy-imports"]
+}

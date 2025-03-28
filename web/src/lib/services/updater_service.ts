@@ -30,12 +30,11 @@ export class UpdaterService extends DefaultEventEmitter<UpdaterServiceEvents> im
 
 	private onMessage(msg: MessageEvent) {
 		try {
-			let payload: WebsocketRawMessage<unknown>;
-			payload = JSON.parse(msg.data);
+			const payload: WebsocketRawMessage<unknown> = JSON.parse(msg.data);
 			if (!payload || payload.op === undefined) return;
 
 			switch (payload.op) {
-				case OP_CODES.CONVERSION_UPDATE:
+				case OP_CODES.CONVERSION_UPDATE: {
 					const data = payload.data as ConversionUpdateData;
 					const status = data.status === "DONE" ? ConversionStatus.DONE :
 						data.status === "RUNNING" ? ConversionStatus.RUNNING :
@@ -43,8 +42,11 @@ export class UpdaterService extends DefaultEventEmitter<UpdaterServiceEvents> im
 
 					this.emit("conversionUpdate", data.id, status);
 					break;
+				}
 			}
-		} catch { }
+		} catch {
+			// empty
+		}
 	}
 
 	public init() {
