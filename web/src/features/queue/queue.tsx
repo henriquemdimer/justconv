@@ -3,14 +3,19 @@ import Checkbox from "@/components/ui/checkbox/index.tsx";
 import { Dropdown, DropdownMenu } from "@/components/ui/dropdown";
 import { useConversion } from "@/store/conversion";
 import { ConversionStatus, Conversion as LibConversion } from "@/types/conversion.ts";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { BiCollapseVertical } from "react-icons/bi";
 import { FaDownload, FaRegTrashCan } from "react-icons/fa6";
 import Conversion from "./components/conversion/index.tsx";
 import FormatsTable from "./components/formats-table";
 import "./queue.scss";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
-export default function Queue() {
+export interface QueueProps {
+	filesInput: RefObject<HTMLInputElement | null>;
+}
+
+export default function Queue(props: QueueProps) {
 	const [formatSelectionMenuActive, setFormatSelectionMenuActive] = useState(false);
 	const conversionStore = useConversion();
 	const checked = [...conversionStore.list.values()].filter((c) => c.checked);
@@ -106,19 +111,25 @@ export default function Queue() {
 						</tr>
 					</thead>
 					<tbody>
-						{[...conversionStore.list.values()].map((conv) => (
-							<tr key={conv.id}>
-								<Conversion
-									isChecked={conv.checked}
-									id={conv.id}
-									name={conv.name}
-									size={conv.size}
-									status={conv.status}
-									format={conv.format} />
-							</tr>
-						))}
+					{[...conversionStore.list.values()].map((conv) => (
+						<tr key={conv.id}>
+							<Conversion
+								isChecked={conv.checked}
+								id={conv.id}
+								name={conv.name}
+								size={conv.size}
+								status={conv.status}
+								format={conv.format} />
+						</tr>
+					))}
 					</tbody>
 				</table>
+				{conversionStore.list.size < 1 && (
+					<div onClick={() => props.filesInput.current?.click()} id="queue__drag-n-drop">
+						<i><AiOutlineCloudUpload /></i>
+						Drop files or click here
+					</div>
+				)}
 			</div>
 		</div >
 	)

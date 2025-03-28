@@ -97,7 +97,7 @@ export default function HomePage() {
 						</Button>
 					</div>
 				</div>
-				<Queue />
+				<Queue filesInput={inputRef} />
 			</div>
 		</DefaultLayout>
 	)
