@@ -17,12 +17,14 @@ export default function FormatsTable(props: FormatsTableProps) {
 	const [selectedGroup, setSelectedGroup] = useState("");
 
 	useEffect(() => {
+		if (activeServer && !selectedGroup && activeServer.formats.length)
+				setSelectedGroup(activeServer.formats[0].type);
+	}, [activeServer?.formats])
+
+	useEffect(() => {
 		(async () => {
 			const activeServer = serverStore.getActive();
 			if (!activeServer) return;
-
-			if (!selectedGroup && activeServer.formats.length)
-				setSelectedGroup(activeServer.formats[0].type);
 
 			if (activeServer.host === lastServer.current || activeServer.formats.length) return;
 			lastServer.current = activeServer.host;
@@ -55,13 +57,13 @@ export default function FormatsTable(props: FormatsTableProps) {
 						groups.push(group);
 					}
 
-					serverStore.set({ ...activeServer, formats: groups });
+					serverStore.setFormats(activeServer.host, groups);
 				}
 			} finally {
 				setIsLoading(false);
 			}
 		})();
-	}, [serverStore.getActive()]);
+	}, [activeServer]);
 
 
 	return (

@@ -34,6 +34,7 @@ export default function DefaultLayout(props: DefaultLayoutProps) {
 		});
 
 		server.updater.on("connected", () => setLoading(false));
+		server.updater.on("disconnected", () => console.log("CU"));
 		server.updater.init();
 	}, [server]);
 

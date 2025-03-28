@@ -8,6 +8,7 @@ import { OP_CODES } from "@/types/ws/op_codes";
 export type UpdaterServiceEvents = {
 	"conversionUpdate": (id: string, status: ConversionStatus) => void;
 	"connected": () => void;
+	"disconnected": () => void;
 }
 
 export interface IUpdaterService extends Emitter<UpdaterServiceEvents> {
@@ -25,6 +26,7 @@ export class UpdaterService extends DefaultEventEmitter<UpdaterServiceEvents> im
 		});
 
 		this._adapter.on("open", () => this.emit("connected"));
+		this._adapter.on("close", () => this.emit("disconnected"));
 		this.onMessage = this.onMessage.bind(this);
 	}
 
