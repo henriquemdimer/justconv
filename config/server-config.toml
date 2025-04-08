@@ -1,0 +1,6 @@
+[auth]
+required = false
+users_can_create_accounts = false
+
+[net]
+port = 8080

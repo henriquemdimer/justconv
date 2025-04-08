@@ -1,12 +1,12 @@
 BIN_DIR=bin
-SRC=cmd/justconv/main.go
+SRC=cmd/server/main.go
 TARGET=$(BIN_DIR)/justconv
 
 LDFLAGS="-s -w"
 GCFLAGS="-l -c 4"
 CMDFLAGS=-v -trimpath
 
-.PHONY: dev run build clean deps
+.PHONY: dev run build clean deps lint
 
 all: deps build
 
@@ -16,8 +16,14 @@ build: $(BIN_DIR)
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
+deps:
+	go mod tidy
+
 run:
 	@./$(TARGET)
+
+lint:
+	golangci-lint run
 
 dev: build run
 
